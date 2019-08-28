@@ -15,25 +15,25 @@ var ConsumeWait *sync.WaitGroup
 var ConsumeRegularCloseSign = false
 
 func Consume() {
-	if base.ConsumeChannel == nil {
-		base.ConsumeConnect()
+	if ConsumeChannel == nil {
+		ConsumeConnect()
 	}
-	err := base.ConsumeChannel.Qos(1, 0, true)
+	err := ConsumeChannel.Qos(1, 0, true)
 	if err != nil {
 		log.Warnf("ConsumeBindQueue 设置Qos出错，err = %v", err)
-		base.ConsumeChannel.Close()
-		base.ConsumeChannel = nil
-		base.ConsumeConn.Close()
+		ConsumeChannel.Close()
+		ConsumeChannel = nil
+		ConsumeConn.Close()
 		time.Sleep(3 * time.Second)
 		go ConsumeStart()
 		return
 	}
-	msg, err := base.ConsumeChannel.Consume(base.GetConfig().MQs["consume"].Queue, "", false, false, false, false, nil)
+	msg, err := ConsumeChannel.Consume(base.GetConfig().MQs["consume"].Queue, "", false, false, false, false, nil)
 	if err != nil {
 		log.Warn("ConsumeBindQueue 接收MQ消息出错，err = ", err)
-		base.ConsumeChannel.Close()
-		base.ConsumeChannel = nil
-		base.ConsumeConn.Close()
+		ConsumeChannel.Close()
+		ConsumeChannel = nil
+		ConsumeConn.Close()
 		time.Sleep(3 * time.Second)
 		go ConsumeStart()
 		return
@@ -48,12 +48,12 @@ func Consume() {
 
 	if ConsumeRegularCloseSign == true {
 		log.Infof("ConsumeRegularCloseSign = %v,ConsumeQueue已正常关闭", ConsumeRegularCloseSign)
-		base.MQWait.Done()
+		MQWait.Done()
 	} else {
 		log.Infof("ConsumeRegularCloseSign = %v,ConsumeQueue开始重连", ConsumeRegularCloseSign)
-		base.ConsumeChannel.Close()
-		base.ConsumeChannel = nil
-		base.ConsumeConn.Close()
+		ConsumeChannel.Close()
+		ConsumeChannel = nil
+		ConsumeConn.Close()
 		go ConsumeStart()
 	}
 }
@@ -62,7 +62,7 @@ func rangeBindChannel(msg <-chan amqp.Delivery) {
 	defer ConsumeWait.Done()
 	for m := range msg {
 		traceId := time.Now().Format("20060102150405") + utils.GetRandomString()
-		data := new(models.BindingMQData)
+		data := new(models.AirVisualReply)
 		err := json.Unmarshal(m.Body, data)
 		if err != nil {
 			log.Warnf("rangeBindChannel Unmarshal msg 出错,traceId = %v,err = %v,msgInfo = %v", traceId, err, string(m.Body))

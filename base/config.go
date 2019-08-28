@@ -16,6 +16,7 @@ type tomlConfig struct {
 	Log    Log
 	DB     DB
 	MQs    map[string]MQ
+	Redis  Redis
 }
 
 type Server struct {
@@ -37,6 +38,14 @@ type DB struct {
 	Host        string
 	MaxOpenConn int
 	MaxIdleConn int
+}
+
+type Redis struct {
+	MaxIdle  int
+	Timeout  int
+	Ip       string
+	Port     string
+	Password string
 }
 
 type MQ struct {

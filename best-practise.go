@@ -3,31 +3,29 @@ package main
 import (
 	"fmt"
 	"github.com/heyHui2018/best-practise/base"
+	"github.com/heyHui2018/best-practise/middleWare"
 	"github.com/heyHui2018/best-practise/routers"
 	"github.com/heyHui2018/best-practise/service"
 	"github.com/ngaut/log"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 )
 
 func main() {
 	base.ConfigInit()
 	base.LogInit()
 	base.DbInit()
-	service.MQStart()
+	service.MQInit()
+
+	go service.Cron()
+
+	g := routers.InitRouter()
+	g.Use(middleWare.Cors())
 
 	httpPort := fmt.Sprintf(":%d", base.GetConfig().Server.HttpPort)
-	server := &http.Server{
-		Addr:         httpPort,
-		Handler:      routers.InitRouter(),
-		ReadTimeout:  time.Duration(base.GetConfig().Server.ReadTimeout),
-		WriteTimeout: time.Duration(base.GetConfig().Server.WriteTimeout),
-	}
+	go g.Run(httpPort)
 	log.Infof("start listening on %s", httpPort)
-	go server.ListenAndServe()
 
 	signs := make(chan os.Signal)
 	signal.Notify(signs, syscall.SIGKILL, syscall.SIGTERM, syscall.SIGHUP, os.Interrupt, os.Kill, os.Interrupt)

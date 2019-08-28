@@ -5,12 +5,19 @@ readTimeout = 20
 writeTimeout = 20
 
 [DB]
-database = "service_account"
+database = "2019cny_operation"
 username = "root"
 password = "111111"
 host = "172.16.17.121:3306"
 maxOpenConn = 100
 maxIdleConn = 50
+
+[redis]
+maxIdle = 100
+timeout = 20
+ip = "172.16.17.121"
+port = "6379"
+password = ""
 
 [MQs]
   [MQs.consume]
