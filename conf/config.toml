@@ -1,0 +1,40 @@
+[server]
+runMode = "debug"
+httpPort = 8666
+readTimeout = 20
+writeTimeout = 20
+
+[DB]
+database = "service_account"
+username = "root"
+password = "111111"
+host = "172.16.17.121:3306"
+maxOpenConn = 100
+maxIdleConn = 50
+
+[MQs]
+  [MQs.consume]
+  ip = "127.0.0.1"
+  port = "5672"
+  username = "admin"
+  password = "admin"
+  host = "/"
+  exchange = "best.practise.consume.exchange"
+  key = "best.practise.consume.routingKey"
+  queue = "best.practise.consume.queue"
+  chanRangeNum = 20
+
+  [MQs.publish]
+  ip = "127.0.0.1"
+  port = "5672"
+  username = "admin"
+  password = "admin"
+  host = "/"
+  exchange = "best.practise.publish.exchange"
+  key = "best.practise.publish.routingKey"
+  queue = "best.practise.publish.queue"
+  chanRangeNum = 20
+
+[log]
+path = "best-practise.log"
+level = "info"
