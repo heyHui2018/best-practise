@@ -23,7 +23,7 @@ func Weather(c *gin.Context) {
 	}
 	if ok, param := utils.StrLengthCheck(toCheck); !ok {
 		log.Warnf("Weather 入参 %v 为空,traceId = %v", param, traceId)
-		base.ResFail(base.MissingParam, c)
+		models.Fail(base.MissingParam, c)
 		return
 	}
 	avr := new(models.AirVisualReply)
@@ -33,9 +33,9 @@ func Weather(c *gin.Context) {
 	avd, err := avr.Data.Query()
 	if err != nil {
 		log.Warnf("Weather Query error,traceId = %v,err = %v", traceId, err)
-		base.ResFail(base.SystemError, c)
+		models.Fail(base.SystemError, c)
 		return
 	}
 	log.Infof("Weather 完成,traceId = %v,avd = %+v,耗时 = %v", traceId, avd, time.Since(start))
-	base.ResSuccess(avd, c)
+	models.Success(avd, c)
 }

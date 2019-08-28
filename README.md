@@ -1,4 +1,5 @@
-###最佳实践
+### 最佳实践
+***
 包含如下框架/组件:
 * [x] gin--框架--github.com/gin-gonic/gin
 * [x] toml--配置--github.com/BurntSushi/toml
@@ -17,8 +18,8 @@
 * [ ] influxDB--数据收集
 * [ ] grafana--数据展示
 * [ ] leetCode--数据源
-
-###Developing...
+***
+### Developing...
 
 1、接口：输入邮箱，发送当天天气
 
