@@ -54,7 +54,7 @@ func ConsumeStart() {
 	log.Info("consumeStart完成")
 	MQWait = new(sync.WaitGroup)
 	MQWait.Add(1)
-	go Consume()
+	go MQConsume()
 }
 
 func PublishStart() {

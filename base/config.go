@@ -17,6 +17,7 @@ type tomlConfig struct {
 	DB     DB
 	MQs    map[string]MQ
 	Redis  Redis
+	Mail   Mail
 }
 
 type Server struct {
@@ -46,6 +47,13 @@ type Redis struct {
 	Ip       string
 	Port     string
 	Password string
+}
+
+type Mail struct {
+	Username string
+	Password string
+	Nickname string
+	MailType string
 }
 
 type MQ struct {

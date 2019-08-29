@@ -19,6 +19,12 @@ ip = "172.16.17.121"
 port = "6379"
 password = ""
 
+[mail]
+username = ""
+password = ""
+nickname = "heyHui2018 from github"
+mailtype = ""
+
 [MQs]
   [MQs.consume]
   ip = "127.0.0.1"

@@ -8,13 +8,13 @@ import (
 	"time"
 )
 
-func Publish(traceId string, msg interface{}) {
+func MQPublish(traceId string, msg interface{}) {
 	if PublishChannel == nil {
 		PublishStart()
 	}
 	publishInfo, err := json.Marshal(msg)
 	if err != nil {
-		log.Warnf("Publish Marshal error,traceId = %v,err = %v", traceId, err)
+		log.Warnf("MQPublish Marshal error,traceId = %v,err = %v", traceId, err)
 		return
 	}
 	exchange := base.GetConfig().MQs["publish"].Exchange
@@ -25,7 +25,7 @@ func Publish(traceId string, msg interface{}) {
 		Body: publishInfo,
 	})
 	if err != nil {
-		log.Warnf("Publish error,traceId = %v,err = %v", traceId, err)
+		log.Warnf("MQPublish error,traceId = %v,err = %v", traceId, err)
 		PublishChannel.Close()
 		PublishChannel = nil
 		PublishConn.Close()
@@ -33,5 +33,5 @@ func Publish(traceId string, msg interface{}) {
 		go PublishStart()
 		return
 	}
-	log.Infof("Publish success,traceId = %v", traceId)
+	log.Infof("MQPublish success,traceId = %v", traceId)
 }

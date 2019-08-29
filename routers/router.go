@@ -14,7 +14,7 @@ func InitRouter() *gin.Engine {
 	{
 		api := pre.Group("/Api")
 		{
-			api.GET("/weather", controller.Weather)
+			api.POST("/register", controller.Register)
 		}
 	}
 	return g
