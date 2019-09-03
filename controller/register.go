@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/models"
+	"github.com/heyHui2018/log"
 	"github.com/heyHui2018/utils"
-	"github.com/ngaut/log"
 	"time"
 )
 
@@ -18,6 +18,9 @@ param:city 城市
 */
 
 func Register(c *gin.Context) {
+	// l := new(base.LogP)
+	// l.TraceId = time.Now().Format("20060102150405") + utils.GetRandomString()
+	// l.LogP("Register 完成,耗时 = %v", 123)
 	start := time.Now()
 	traceId := c.GetString("traceId")
 	rr := new(models.RegisterRecord)

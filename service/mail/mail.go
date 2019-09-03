@@ -1,9 +1,10 @@
-package service
+package mail
 
 import (
 	"encoding/json"
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/models"
+	"github.com/heyHui2018/best-practise/service/dataSource"
 	"github.com/ngaut/log"
 	"net/smtp"
 	"strconv"
@@ -47,7 +48,7 @@ func SendMail(traceId string) {
 		contentType = "Content-Type: text/plain; charset=UTF-8"
 	}
 	subject := "Weather Today"
-	data := GetWeather(traceId, "ShangHai", "ShangHai", "China")
+	data := dataSource.GetWeather(traceId, "ShangHai", "ShangHai", "China")
 	body, err := json.Marshal(data)
 	if err != nil {
 		log.Warnf("SendMail Marshal error,traceId = %v,err = %v", traceId, err)
@@ -55,7 +56,6 @@ func SendMail(traceId string) {
 	}
 	msg := []byte("To: " + to + "\r\nFrom: " + mail.Nickname + "<" + mail.Username + ">\r\nSubject: " + subject + "\r\n" + contentType + "\r\n\r\n")
 	msg = append(msg, body...)
-	log.Infof("body = %v", string(body))
 	err = smtp.SendMail(MailHostMap["tencent"], auth, mail.Username, strings.Split(to, ";"), msg)
 	if err != nil {
 		log.Warnf("SendMail error,err = %v", err)

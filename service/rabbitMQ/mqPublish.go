@@ -1,4 +1,4 @@
-package service
+package rabbitMQ
 
 import (
 	"encoding/json"
@@ -18,6 +18,7 @@ func MQPublish(traceId string, msg interface{}) {
 		return
 	}
 	exchange := base.GetConfig().MQs["publish"].Exchange
+	// exchange := base.GetConfig().MQs["deadLetter"].Exchange
 	key := base.GetConfig().MQs["publish"].Key
 	err = PublishChannel.Publish(exchange, key, false, false, amqp.Publishing{
 		ContentType: "text/plain",

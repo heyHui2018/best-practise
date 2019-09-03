@@ -1,8 +1,8 @@
-package service
+package rabbitMQ
 
 import (
 	"github.com/heyHui2018/best-practise/base"
-	"github.com/ngaut/log"
+	"github.com/heyHui2018/log"
 	"github.com/streadway/amqp"
 	"sync"
 	"time"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-xorm/xorm"
-	"github.com/ngaut/log"
+	"github.com/heyHui2018/log"
 )
 
 var DBEngine *xorm.Engine

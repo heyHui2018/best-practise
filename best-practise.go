@@ -5,8 +5,9 @@ import (
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/middleWare"
 	"github.com/heyHui2018/best-practise/routers"
-	"github.com/heyHui2018/best-practise/service"
-	"github.com/ngaut/log"
+	"github.com/heyHui2018/best-practise/service/cron"
+	"github.com/heyHui2018/best-practise/service/rabbitMQ"
+	"github.com/heyHui2018/log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -16,9 +17,9 @@ func main() {
 	base.ConfigInit()
 	base.LogInit()
 	base.DbInit()
-	service.MQInit()
+	rabbitMQ.MQInit()
 
-	go service.Cron()
+	go cron.Cron()
 
 	g := routers.InitRouter()
 	g.Use(middleWare.Cors())
@@ -38,7 +39,7 @@ func main() {
 
 func clear() {
 	log.Info("开始停止程序....")
-	service.ConsumeRegularCloseSign = true
+	rabbitMQ.ConsumeRegularCloseSign = true
 	log.Info("资源清理成功，退出")
 	os.Exit(0)
 }
