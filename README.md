@@ -10,6 +10,7 @@
 * [x] 天气API--数据源--api.airvisual.com
 * [x] cron--定时任务--github.com/robfig/cron
 * [x] 优雅退出
+* [x] JWT
 * [ ] grpc--微服务调用方式
 * [x] etcd--服务发现
 * [ ] 短信--提醒
