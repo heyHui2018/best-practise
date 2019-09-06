@@ -18,6 +18,7 @@ type tomlConfig struct {
 	MQs    map[string]MQ
 	Redis  Redis
 	Mail   Mail
+	Kafka  Kafka
 }
 
 type Server struct {
@@ -66,6 +67,12 @@ type MQ struct {
 	Key          string
 	Queue        string
 	ChanRangeNum int
+}
+
+type Kafka struct {
+	Hosts string
+	Topic string
+	Key   string
 }
 
 func ConfigInit() {

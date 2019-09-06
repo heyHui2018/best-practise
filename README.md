@@ -17,7 +17,7 @@
 * [x] 邮件--提醒--net/smtp
 * [ ] 二维码
 * [ ] nsq
-* [ ] kafka--日志收集
+* [x] kafka--日志收集
 * [ ] influxDB--数据收集
 * [ ] grafana--数据展示
 * [ ] leetCode--数据源

@@ -51,3 +51,8 @@ mailtype = ""
 [log]
 path = "best-practise.log"
 level = "info"
+
+[kafka]
+hosts = "172.16.16.114:9092"
+topic = "test"
+key = "key"

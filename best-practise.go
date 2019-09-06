@@ -26,7 +26,7 @@ func main() {
 
 	httpPort := fmt.Sprintf(":%d", base.GetConfig().Server.HttpPort)
 	go g.Run(httpPort)
-	log.Infof("start listening on %s", httpPort)
+	log.Infof("Start listening on %s", httpPort)
 
 	signs := make(chan os.Signal)
 	signal.Notify(signs, syscall.SIGKILL, syscall.SIGTERM, syscall.SIGHUP, os.Interrupt, os.Kill, os.Interrupt)
