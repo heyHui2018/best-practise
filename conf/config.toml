@@ -56,3 +56,11 @@ level = "info"
 hosts = "172.16.16.114:9092"
 topic = "test"
 key = "key"
+
+[InfluxDB]
+database = "test"
+ip = "172.16.16.114"
+port = "8089"
+username = "test"
+password = "test"
+retentionPolicy = "default"

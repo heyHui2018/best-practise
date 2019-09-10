@@ -12,13 +12,14 @@ func GetConfig() *tomlConfig {
 
 // 此struct存放各标题字段
 type tomlConfig struct {
-	Server Server
-	Log    Log
-	DB     DB
-	MQs    map[string]MQ
-	Redis  Redis
-	Mail   Mail
-	Kafka  Kafka
+	Server   Server
+	Log      Log
+	DB       DB
+	MQs      map[string]MQ
+	Redis    Redis
+	Mail     Mail
+	Kafka    Kafka
+	InfluxDB InfluxDB
 }
 
 type Server struct {
@@ -73,6 +74,15 @@ type Kafka struct {
 	Hosts string
 	Topic string
 	Key   string
+}
+
+type InfluxDB struct {
+	Database        string
+	Ip              string
+	Port            string
+	Username        string
+	Password        string
+	RetentionPolicy string
 }
 
 func ConfigInit() {
