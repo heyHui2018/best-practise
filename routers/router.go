@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/heyHui2018/best-practise/controller"
+	"github.com/heyHui2018/best-practise/controller/dataSource"
 	"github.com/heyHui2018/best-practise/middleWare"
 )
 
@@ -33,7 +33,7 @@ func InitRouter() *gin.Engine {
 
 		api := pre.Group("/Api")
 		{
-			api.POST("/register", controller.Register)
+			api.POST("/register", dataSource.Register)
 		}
 	}
 	return g

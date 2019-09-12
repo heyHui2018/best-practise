@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+//option java_multiple_files = true;
+//option java_package = "io.grpc.examples.timestamp";
+//option java_outer_classname = "TimestampProto";
+
+package timestamp;
+
+// The service definition.
+service Get {
+    rpc GetTimestamp (GetRequest) returns (GetReply) {
+    }
+}
+
+message GetRequest {
+    //    string name = 1;
+}
+
+message GetReply {
+    int64 status = 1;
+    string message = 2;
+    int64 timestamp = 3;
+    string data = 4;
+}
+
+//https://colobu.com/2015/01/07/Protobuf-language-guide/#%E6%A0%87%E9%87%8F%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B

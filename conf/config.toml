@@ -1,6 +1,7 @@
 [server]
 runMode = "debug"
 httpPort = 8666
+rpcPort = 8667
 readTimeout = 20
 writeTimeout = 20
 

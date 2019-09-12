@@ -25,6 +25,7 @@ type tomlConfig struct {
 type Server struct {
 	RunMode      string
 	HttpPort     int
+	RpcPort      int
 	ReadTimeout  int64
 	WriteTimeout int64
 }
