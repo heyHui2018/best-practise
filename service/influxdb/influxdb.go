@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func Insert(measurement string, tags map[string]string, fields map[string]interface{}, t time.Time, traceId string) {
+func Insert(measurement string, tags map[string]string, fields map[string]interface{}, t time.Time, tlog *log.TLog) {
 	config := new(client.HTTPConfig)
 	config.Addr = fmt.Sprintf("http://%s:%s", base.GetConfig().InfluxDB.Ip, base.GetConfig().InfluxDB.Port)
 	config.Username = base.GetConfig().InfluxDB.Username
@@ -16,7 +16,7 @@ func Insert(measurement string, tags map[string]string, fields map[string]interf
 
 	cli, err := client.NewHTTPClient(*config)
 	if err != nil {
-		log.Warnf("InfluxDBInsert NewHTTPClient error,traceId = %v,err = %v", traceId, err)
+		tlog.Warnf("InfluxDBInsert NewHTTPClient error,err = %v", err)
 		return
 	}
 	defer cli.Close()
@@ -28,16 +28,16 @@ func Insert(measurement string, tags map[string]string, fields map[string]interf
 
 	pt, err := client.NewPoint(measurement, tags, fields, t)
 	if err != nil {
-		log.Warnf("InfluxDBInsert NewPoint error,traceId = %v,err = %v", traceId, err)
+		tlog.Warnf("InfluxDBInsert NewPoint error,err = %v", err)
 	}
 	bp.AddPoint(pt)
 
 	if err := cli.Write(bp); err != nil {
-		log.Warnf("InfluxDBInsert Write error,traceId = %v,err = %v", traceId, err)
+		tlog.Warnf("InfluxDBInsert Write error,err = %v", err)
 	}
-	log.Infof("InfluxDBInsert 完成,traceId = %v", traceId)
+	tlog.Infof("InfluxDBInsert 完成")
 }
 
-func Query(){
+func Query() {
 
 }

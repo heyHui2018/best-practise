@@ -3,18 +3,18 @@ package rabbitMQ
 import (
 	"encoding/json"
 	"github.com/heyHui2018/best-practise/base"
-	"github.com/ngaut/log"
+	"github.com/heyHui2018/log"
 	"github.com/streadway/amqp"
 	"time"
 )
 
-func MQPublish(traceId string, msg interface{}) {
+func MQPublish(t log.TLog, msg interface{}) {
 	if PublishChannel == nil {
 		PublishStart()
 	}
 	publishInfo, err := json.Marshal(msg)
 	if err != nil {
-		log.Warnf("MQPublish Marshal error,traceId = %v,err = %v", traceId, err)
+		t.Warnf("MQPublish Marshal error,err = %v", err)
 		return
 	}
 	exchange := base.GetConfig().MQs["publish"].Exchange
@@ -26,7 +26,7 @@ func MQPublish(traceId string, msg interface{}) {
 		Body: publishInfo,
 	})
 	if err != nil {
-		log.Warnf("MQPublish error,traceId = %v,err = %v", traceId, err)
+		t.Warnf("MQPublish error,err = %v", err)
 		PublishChannel.Close()
 		PublishChannel = nil
 		PublishConn.Close()
@@ -34,5 +34,5 @@ func MQPublish(traceId string, msg interface{}) {
 		go PublishStart()
 		return
 	}
-	log.Infof("MQPublish success,traceId = %v", traceId)
+	t.Infof("MQPublish success")
 }

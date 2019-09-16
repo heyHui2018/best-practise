@@ -18,18 +18,16 @@ param:city 城市
 */
 
 func Register(c *gin.Context) {
-	// l := new(base.LogP)
-	// l.TraceId = time.Now().Format("20060102150405") + utils.GetRandomString()
-	// l.LogP("Register 完成,耗时 = %v", 123)
+	t := new(log.TLog)
+	t.TraceId = c.GetString("traceId")
 	start := time.Now()
-	traceId := c.GetString("traceId")
 	rr := new(models.RegisterRecord)
 	rr.Email = c.Request.FormValue("email")
 	rr.Hour = c.Request.FormValue("hour")
 	rr.City = c.Request.FormValue("city")
 	rr.State = c.Request.FormValue("state")
 	rr.Country = c.Request.FormValue("country")
-	log.Infof("Register 入参,traceId = %v,rr = %+v", traceId, rr)
+	t.Infof("Register 入参,rr = %+v", rr)
 	toCheck := map[string]string{
 		"email":   rr.Email,
 		"hour":    rr.Hour,
@@ -38,31 +36,31 @@ func Register(c *gin.Context) {
 		"country": rr.Country,
 	}
 	if ok, param := utils.StrLengthCheck(toCheck); !ok {
-		log.Warnf("Register 入参 %v 为空,traceId = %v", param, traceId)
+		t.Warnf("Register 入参 %v 为空", param)
 		models.Fail(base.MissingParam, c)
 		return
 	}
 	// 查询是否已注册
 	getRes, err := rr.GetByEmail()
 	if err != nil {
-		log.Warnf("Register GetByEmail error,traceId = %v,err = %v", traceId, err)
+		t.Warnf("Register GetByEmail error,err = %v", err)
 		models.Fail(base.SystemError, c)
 		return
 	}
 	if getRes.Id > 0 {
-		log.Infof("Register email已存在,traceId = %v", traceId)
+		t.Infof("Register email已存在")
 		if getRes.Hour != rr.Hour {
 			err = rr.UpdateByEmail()
-			log.Warnf("Register UpdateByEmail error,traceId = %v,err = %v", traceId, err)
+			t.Warnf("Register UpdateByEmail error,err = %v", err)
 		}
 	} else {
 		err = rr.Insert()
 		if err != nil {
-			log.Warnf("Register Insert error,traceId = %v,err = %v", traceId, err)
+			t.Warnf("Register Insert error,err = %v", err)
 			models.Fail(base.SystemError, c)
 			return
 		}
 	}
-	log.Infof("Register 完成,traceId = %v,耗时 = %v", traceId, time.Since(start))
+	t.Infof("Register 完成,耗时 = %v", time.Since(start))
 	models.Success(nil, c)
 }

@@ -5,7 +5,7 @@ import (
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/models"
 	"github.com/heyHui2018/best-practise/service/dataSource"
-	"github.com/ngaut/log"
+	"github.com/heyHui2018/log"
 	"net/smtp"
 	"strconv"
 	"strings"
@@ -21,13 +21,13 @@ var MailHostMap = map[string]string{
 	"gmail":   "smtp.gmail.com:25",     // gmail
 }
 
-func SendMail(traceId string) {
+func SendMail(t *log.TLog) {
 	// 从数据库查询当前时刻需发送邮件的用户
 	rr := new(models.RegisterRecord)
 	rr.Hour = strconv.Itoa(time.Now().Hour())
 	rrList, err := rr.FindByHour()
 	if err != nil {
-		log.Warnf("SendMail FindByHour error,traceId = %v,err = %v", traceId, err)
+		t.Warnf("SendMail FindByHour error,err = %v", err)
 		return
 	}
 	to := ""
@@ -48,18 +48,18 @@ func SendMail(traceId string) {
 		contentType = "Content-Type: text/plain; charset=UTF-8"
 	}
 	subject := "Weather Today"
-	data := dataSource.GetWeather(traceId, "ShangHai", "ShangHai", "China")
+	data := dataSource.GetWeather(t, "ShangHai", "ShangHai", "China")
 	body, err := json.Marshal(data)
 	if err != nil {
-		log.Warnf("SendMail Marshal error,traceId = %v,err = %v", traceId, err)
+		t.Warnf("SendMail Marshal error,err = %v", err)
 		return
 	}
 	msg := []byte("To: " + to + "\r\nFrom: " + mail.Nickname + "<" + mail.Username + ">\r\nSubject: " + subject + "\r\n" + contentType + "\r\n\r\n")
 	msg = append(msg, body...)
 	err = smtp.SendMail(MailHostMap["tencent"], auth, mail.Username, strings.Split(to, ";"), msg)
 	if err != nil {
-		log.Warnf("SendMail error,err = %v", err)
+		t.Warnf("SendMail error,err = %v", err)
 		return
 	}
-	log.Infof("SendMail 完成,traceId = %v", traceId)
+	t.Infof("SendMail 完成")
 }

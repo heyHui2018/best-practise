@@ -12,16 +12,18 @@ import (
 func Cron() {
 	c := cron.New()
 	err := c.AddFunc("@hourly", func() {
-		traceId := time.Now().Format("20060102150405") + utils.GetRandomString()
-		dataSource.GetWeather(traceId, "Shanghai", "Shanghai", "China")
+		t := new(log.TLog)
+		t.TraceId = time.Now().Format("20060102150405") + utils.GetRandomString()
+		dataSource.GetWeather(t, "Shanghai", "Shanghai", "China")
 	})
 	if err != nil {
 		log.Warnf("Cron c.AddFunc error,err = %v", err)
 	}
 	err = c.AddFunc("@hourly", func() {
 		// err = c.AddFunc("*/10 * * * * * ", func() {
-		traceId := time.Now().Format("20060102150405") + utils.GetRandomString()
-		mail.SendMail(traceId)
+		t := new(log.TLog)
+		t.TraceId = time.Now().Format("20060102150405") + utils.GetRandomString()
+		mail.SendMail(t)
 	})
 	if err != nil {
 		log.Warnf("Cron c.AddFunc error,err = %v", err)
