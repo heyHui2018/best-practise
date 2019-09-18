@@ -12,7 +12,7 @@ func RegisterStart() {
 	if len(endpoints) == 0 {
 		log.Fatalf("RegisterStart,endpoints error,endpoints = %v", endpoints)
 	}
-	names := base.GetConfig().Etcd.Names
+	keys := base.GetConfig().Etcd.Keys
 	ip := base.GetConfig().Etcd.Ip
 	ser, err := NewService(endpoints, 5)
 	if err != nil {
@@ -21,8 +21,8 @@ func RegisterStart() {
 		go RegisterStart()
 		return
 	}
-	for k := range names {
-		err = ser.PutService(names[k], ip)
+	for k := range keys {
+		err = ser.PutService(keys[k], ip)
 		if err != nil {
 			log.Warnf("RegisterStart,PutService error,err = %v", err)
 		}

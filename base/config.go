@@ -89,7 +89,7 @@ type InfluxDB struct {
 
 type Etcd struct {
 	Endpoints []string
-	Names     []string
+	Keys      []string
 	Ip        string
 }
 
