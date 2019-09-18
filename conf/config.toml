@@ -65,3 +65,8 @@ port = "8089"
 username = "test"
 password = "test"
 retentionPolicy = "default"
+
+[etcd]
+endpoints = ["172.16.16.114:2379"]
+names = ["timestamp"]
+ip = "172.16.125.18:6667"

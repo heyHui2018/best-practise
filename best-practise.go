@@ -8,6 +8,7 @@ import (
 	"github.com/heyHui2018/best-practise/pb"
 	"github.com/heyHui2018/best-practise/routers"
 	"github.com/heyHui2018/best-practise/service/cron"
+	"github.com/heyHui2018/best-practise/service/etcd"
 	"github.com/heyHui2018/best-practise/service/rabbitMQ"
 	"github.com/heyHui2018/log"
 	"google.golang.org/grpc"
@@ -26,6 +27,7 @@ func main() {
 	// base.DataInit()
 
 	go cron.Cron()
+	go etcd.RegisterStart()
 
 	g := routers.InitRouter()
 	g.Use(middleWare.Cors())

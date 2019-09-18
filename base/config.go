@@ -20,6 +20,7 @@ type tomlConfig struct {
 	Mail     Mail
 	Kafka    Kafka
 	InfluxDB InfluxDB
+	Etcd     Etcd
 }
 
 type Server struct {
@@ -84,6 +85,12 @@ type InfluxDB struct {
 	Username        string
 	Password        string
 	RetentionPolicy string
+}
+
+type Etcd struct {
+	Endpoints []string
+	Names     []string
+	Ip        string
 }
 
 func ConfigInit() {
