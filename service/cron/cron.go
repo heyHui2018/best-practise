@@ -12,6 +12,7 @@ import (
 func Cron() {
 	c := cron.New()
 	err := c.AddFunc("@hourly", func() {
+		// err := c.AddFunc("*/10 * * * * * ", func() {
 		t := new(log.TLog)
 		t.TraceId = time.Now().Format("20060102150405") + utils.GetRandomString()
 		dataSource.GetWeather(t, "Shanghai", "Shanghai", "China")

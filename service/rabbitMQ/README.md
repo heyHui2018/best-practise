@@ -3,21 +3,22 @@
 对操作系统而言,频繁的建立、销毁TCP连接的开销是非常昂贵的,且每秒建立的连接有上限,所以最好的方案是只建立一条TCP连接,
 在这条连接当中建立多条信道与RabbitMQ进行私密通信,相当于光纤电缆一样,一条电缆有多条光束,信道是没有限制的.
 
-#### 2.消息丢失
-* 生产者发给RabbitMQ但MQ未收到.开启confirm模式,参考第6条.(此方法的性能比事务机制的更高,因事务机制是同步的,而发送确认是异步的.)
-* RabbitMQ未持久化就挂了.持久化,参考第4条.
-* RabbitMQ转发给了消费者但消费者挂了.开启手动ack,MQ会一直等待消费者的ack,参考第3条.
-
-#### 3.消息未确认
+#### 2.消息未确认
 消费者的确认消息会告诉RabbitMQ已正确接收,RabbitMQ会把消息从队列上删除.若消费者收到一条消息,但在确认之前和RabbitMQ断开了连接(或者从队列上取消了订阅),
 RabbitMQ会认为这条消息没有被分发,会分发给下一个订阅者.RabbitMQ没有用到超时机制,仅通过Consumer的连接中断来确认该Message并没有被正确处理,
 即RabbitMQ给了Consumer足够长的时间来做数据处理,只要连接存在,RabbitMQ会一直等待Consumer的确认消息.
+
+#### 3.消息丢失
+* 生产者发给RabbitMQ但MQ未收到.开启confirm模式,参考第6条.(此方法的性能比事务机制的更高,因事务机制是同步的,而发送确认是异步的.)
+* RabbitMQ未持久化就挂了.持久化,参考第4条.
+* RabbitMQ转发给了消费者但消费者挂了.开启手动ack,MQ会一直等待消费者的ack,参考第3条.
 
 #### 4.持久化
 durable属性决定了RabbitMQ是否需要在崩溃或者重启之后重新创建队列(或者交换器),有三个要点：
 * 把投递模式选项设置为2(持久)
 * 交换器持久化
 * 队列持久化
+
 特点：
 持久性消息从服务器重启中恢复的方式是写入磁盘的持久化日志文件中,当发布一条持久性消息到持久化的交换器上时,消息提交到日志文件后才会响应;
 持久性消息如果路由到了非持久化的队列当中,会自动从持久性日志中移除,即无法从服务器重启中恢复;
@@ -26,11 +27,9 @@ durable属性决定了RabbitMQ是否需要在崩溃或者重启之后重新创�
 
 #### 5.死信
 * 什么是死信
-
     * 消息被拒绝(reject或nack)且requeue=false
     * 消息TTL过期
     * 队列达到最大长度
-    
 * 什么是死信交换机
 
 可与任何一个普通队列绑定,然后在业务队列出现死信时将消息发到死信队列
@@ -52,7 +51,7 @@ x-dead-letter-routing-key：用来设置死信的routingKey
 这就使得生产者知道消息已经正确到达目的队列了,如果消息和队列是可持久化的,那么确认消息会在消息写入磁盘之后发出.confirm模式最大的好处在于异步,
 一旦发布一条消息,生产者应用程序就可以在等待信道返回确认的同时继续发送下一条消息,如果RabbitMQ因为自身内部错误导致消息丢失,就会发送一条nack消息,
 生产者应用程序可以在回调方法中处理该nack消息.
-在channel 被设置成 confirm 模式之后,所有被 publish 的后续消息都将被ack或nack一次,但是无法对快慢做任何保证,且同一条消息不会既被ack又被nack .
+在channel 被设置成 confirm 模式之后,所有被 publish 的后续消息都将被ack或nack一次,但是无法对快慢做任何保证,且同一条消息不会既被ack又被nack.
 
 * 开启方式
 
@@ -60,7 +59,7 @@ x-dead-letter-routing-key：用来设置死信的routingKey
 select-ok表示同意发送者将当前channel信道设置为confirm模式(从目前RabbitMQ最新版本3.6来看,如果调用了channel.confirmSelect方法,
 默认情况下是直接将no-wait设置成false的,也就是默认情况下broker是必须回传confirm.select-ok的).
 
-####7.Qos
+#### 7.Qos
 在消费RabbitMQ时,若使用"github.com/streadway/amqp"的Consume函数,要注意,此函数会自动新建channel,将获取的消息存入此channel,即内存中,
 不受调用者的channel缓冲区的限制.若不想 Consume函数无限制地消费,可在Consume之前调用Qos函数：Channel.Qos(1, 0, true),
 并将 Consume 函数的自动确认参数设为false,在range Consume获得的数据的for循环中,调用ACK函数手动确认,并将参数设为false(当参数为true时,为批量确认,

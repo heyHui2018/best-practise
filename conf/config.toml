@@ -61,7 +61,7 @@ key = "key"
 [InfluxDB]
 database = "test"
 ip = "172.16.16.114"
-port = "8089"
+port = "8086"
 username = "test"
 password = "test"
 retentionPolicy = "default"
