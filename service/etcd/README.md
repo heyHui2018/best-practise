@@ -16,4 +16,30 @@
     "etcd=http://172.16.16.114:2380" -initial-cluster-state new 当启动报错时,重启docker即可 /etc/init.d/docker restart)
     * 验证(curl -L http://172.16.16.114:2479/v2/members 或 etcdctl --endpoints="http://172.16.16.114:2379" get foo)
     
-#### 2.
+#### 2.API
+* 键值相关
+    * Put 存
+    * Get 取
+    * Delete 删
+    * Compact 压缩
+    * Do 执行(Put/Get/Delete也基于Do)
+    * Txn 事务,仅支持If/Then/Else/Commit
+* Watch
+    * Watch 监听key的变化
+    * Close 关闭
+* 租约相关
+    * Grant 分配
+    * Revoke 释放
+    * TimeToLive 获取剩余TTL时间
+    * Leases 获取所有租约
+    * KeepAlive 续约
+    * KeepAliveOnce 仅续约一次
+    * Close 关闭
+* 集群相关
+    * MemberList 获取集群所有成员
+    * MemberAdd 添加成员
+    * MemberRemove 移除成员
+    * MemberUpdate 更新成员
+* 锁
+    * Lock 获取锁
+    * Unlock 释放锁

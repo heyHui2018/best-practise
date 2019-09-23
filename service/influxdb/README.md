@@ -9,7 +9,6 @@
 #### 2.关键词
 ```
 name: census
--————————————
 time                     butterflies     honeybees     location   scientist
 2015-08-18T00:00:00Z      12                23           1         langstroth
 2015-08-18T00:00:00Z      1                 30           1         perpetua
@@ -27,6 +26,7 @@ time                     butterflies     honeybees     location   scientist
 * tag value 表中的location和scientist下的值,类型仅能为string
 * measurement 类似db中的表
 * retention policy 存储策略
-* point 类似于db中的数据行
+* point 类似于db中的数据行,由time/field/tags组成
 * database 顾名思义
 * series 表示数据可在图表上展示成多少条线
+* RP Retention Policies 保留策略,某个库可有多个保留策略,但保留策略必须独一无二
