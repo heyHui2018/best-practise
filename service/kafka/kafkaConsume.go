@@ -2,44 +2,48 @@ package kafka
 
 import (
 	"github.com/Shopify/sarama"
+	cluster "github.com/bsm/sarama-cluster"
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/log"
 	"strings"
-	"sync"
+	"time"
 )
 
-var wg sync.WaitGroup
+// "github.com/Shopify/sarama"不支持consume group,故选择再次封装的"github.com/bsm/sarama-cluster"
+func Consume(log log.TLog, groupId string) {
+	config := cluster.NewConfig()
+	config.Consumer.Return.Errors = true
+	config.Consumer.Offsets.CommitInterval = 1 * time.Second
+	config.Consumer.Offsets.Initial = sarama.OffsetNewest // 从最新的offset开始
+	config.Group.Return.Notifications = true
 
-func kafkaConsume() {
-	// 连接kafka
-	consumer, err := sarama.NewConsumer(strings.Split(base.GetConfig().Kafka.Hosts, ","), nil)
+	// 第二个参数是groupId
+	consumer, err := cluster.NewConsumer(strings.Split(base.GetConfig().Kafka.Hosts, ","), groupId, strings.Split(base.GetConfig().Kafka.Topic, ","), config)
 	if err != nil {
-		log.Warnf("Failed to new consumer,err = %v", err)
-		return
+		log.Warnf("KafkaConsume NewConsumer error,err = %v", err)
 	}
 	defer consumer.Close()
 
-	// consumer.Partitions 用户获取Topic上所有的Partitions
-	partitionList, err := consumer.Partitions(base.GetConfig().Kafka.Topic)
-	if err != nil {
-		log.Warnf("Failed to get the list of partitions,err = %v", err)
-		return
-	}
-
-	for partition := range partitionList {
-		pc, err := consumer.ConsumePartition(base.GetConfig().Kafka.Topic, int32(partition), sarama.OffsetNewest)
-		if err != nil {
-			log.Warnf("Failed to consume for partition = %v,err = %v", partition, err)
+	// 接收错误
+	go func() {
+		for err := range consumer.Errors() {
+			log.Warnf("KafkaConsume,error = %v", err)
 		}
-		pc.AsyncClose()
-		wg.Add(1)
-		go func(sarama.PartitionConsumer) {
-			defer wg.Done()
-			for msg := range pc.Messages() {
-				log.Infof("Partition:%d, Offset:%d, Key:%s, Value:%s", msg.Partition, msg.Offset, string(msg.Key), string(msg.Value))
-			}
-		}(pc)
+	}()
+
+	// 接收rebalance信息
+	go func() {
+		for ntf := range consumer.Notifications() {
+			log.Warnf("KafkaConsume，Notification = %+v", ntf)
+		}
+	}()
+
+	// 消费消息
+	for msg := range consumer.Messages() {
+		log.Infof("KafkaConsume,topic = %v,partition = %v,offset = %v,key = %v,value = %v", msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
+		consumer.MarkOffset(msg, "") // 提交offset
+		// if err := consumer.CommitOffsets(); err != nil {
+		// 	panic(err)
+		// }
 	}
-	wg.Wait()
-	log.Infof("Done consuming topic 'test'")
 }
