@@ -5,7 +5,6 @@ import (
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/models"
 	"github.com/heyHui2018/log"
-	"github.com/heyHui2018/utils"
 	"time"
 )
 
@@ -22,24 +21,28 @@ func Register(c *gin.Context) {
 	t.TraceId = c.GetString("traceId")
 	start := time.Now()
 	rr := new(models.RegisterRecord)
+	/*
+	bind：struct中添加 binding:"required"
+	为了自定义返回,建议使用ShouldBind...
+
+		表单：struct中添加 form:"xxx"
+			post:ShouldBind
+			get:ShouldBindQuery
+		Json: struct中添加 json:"xxx"
+			ShouldBindJSON
+	*/
+	err := c.ShouldBind(rr)
+	if err != nil {
+		t.Warnf("Register 入参 error,err = %v", err)
+		models.Fail(base.BadRequest, c)
+		return
+	}
 	rr.Email = c.Request.FormValue("email")
 	rr.Hour = c.Request.FormValue("hour")
 	rr.City = c.Request.FormValue("city")
 	rr.State = c.Request.FormValue("state")
 	rr.Country = c.Request.FormValue("country")
 	t.Infof("Register 入参,rr = %+v", rr)
-	toCheck := map[string]string{
-		"email":   rr.Email,
-		"hour":    rr.Hour,
-		"city":    rr.City,
-		"state":   rr.State,
-		"country": rr.Country,
-	}
-	if ok, param := utils.StrLengthCheck(toCheck); !ok {
-		t.Warnf("Register 入参 %v 为空", param)
-		models.Fail(base.MissingParam, c)
-		return
-	}
 	// 查询是否已注册
 	getRes, err := rr.GetByEmail()
 	if err != nil {

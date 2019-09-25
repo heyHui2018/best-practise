@@ -2,6 +2,7 @@ package base
 
 const (
 	Success      = 200
+	BadRequest   = 400
 	SystemError  = 500
 	MissingParam = 1001
 	ParamError   = 1002
@@ -16,6 +17,7 @@ const (
 
 var CodeText = map[int]string{
 	Success:      "Success",
+	BadRequest:   "Bad Request",
 	SystemError:  "System error",
 	MissingParam: "Missing param",
 	ParamError:   "Param error",

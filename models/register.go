@@ -7,13 +7,13 @@ import (
 
 type RegisterRecord struct {
 	Id         int64
-	Email      string    `xorm:"'email'"`
-	Hour       string    `xorm:"'hour'"`
-	City       string    `xorm:"'city'"`
-	State      string    `xorm:"'state'"`
-	Country    string    `xorm:"'country'"`
-	CreateTime time.Time `xorm:"DateTime created 'create_time'"`
-	UpdateTime time.Time `xorm:"DateTime updated 'update_time'"`
+	Email      string    `xorm:"'email'"   json:"email"   form:"email"   binding:"required"`
+	Hour       string    `xorm:"'hour'"    json:"hour"    form:"hour"    binding:"required"`
+	City       string    `xorm:"'city'"    json:"city"    form:"city"    binding:"required"`
+	State      string    `xorm:"'state'"   json:"state"   form:"state"   binding:"required"`
+	Country    string    `xorm:"'country'" json:"country" form:"country" binding:"required"`
+	CreateTime time.Time `xorm:"DateTime created 'create_time'" json:"-"`
+	UpdateTime time.Time `xorm:"DateTime updated 'update_time'" json:"-"`
 }
 
 func (this *RegisterRecord) GetByEmail() (*RegisterRecord, error) {
