@@ -70,3 +70,7 @@ retentionPolicy = "default"
 endpoints = ["172.16.16.114:2379"]
 keys = ["timestamp"]
 ip = "172.16.125.18:6667"
+
+[docker]
+whiteList = ["test1","test2"]
+interval = 60

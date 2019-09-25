@@ -21,6 +21,7 @@ type tomlConfig struct {
 	Kafka    Kafka
 	InfluxDB InfluxDB
 	Etcd     Etcd
+	Docker   Docker
 }
 
 type Server struct {
@@ -91,6 +92,11 @@ type Etcd struct {
 	Endpoints []string
 	Keys      []string
 	Ip        string
+}
+
+type Docker struct {
+	WhiteList []string
+	Interval  int
 }
 
 func ConfigInit() {
