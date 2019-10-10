@@ -28,7 +28,7 @@ mailtype = ""
 
 [MQs]
   [MQs.consume]
-  ip = "127.0.0.1"
+  ip = "172.16.125.18"
   port = "5672"
   username = "admin"
   password = "admin"
@@ -39,7 +39,7 @@ mailtype = ""
   chanRangeNum = 20
 
   [MQs.publish]
-  ip = "127.0.0.1"
+  ip = "172.16.125.18"
   port = "5672"
   username = "admin"
   password = "admin"

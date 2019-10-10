@@ -32,3 +32,5 @@
 * 优化grpc router
 * 增加限流逻辑ratelimit
 * rpc负载均衡(各节点部署一个进程监控etcd上的服务ip及端口,随后将这些服务写入iptables上做snat转发,通过iptables的snat修改数据包目的ip实现负载均衡)
+* 微信提醒
+* 服务重启,先清除etcd服务注册,使请求不再到达controller,随后等待所有协程处理完成,再退出进程

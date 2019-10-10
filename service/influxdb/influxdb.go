@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func connect(log *log.TLog) (client.Client, error) {
+func connect() (client.Client, error) {
 	config := new(client.HTTPConfig)
 	config.Addr = fmt.Sprintf("http://%s:%s", base.GetConfig().InfluxDB.Ip, base.GetConfig().InfluxDB.Port)
 	config.Username = base.GetConfig().InfluxDB.Username
@@ -17,7 +17,7 @@ func connect(log *log.TLog) (client.Client, error) {
 }
 
 func Insert(measurement string, tags map[string]string, fields map[string]interface{}, t time.Time, log *log.TLog) {
-	cli, err := connect(log)
+	cli, err := connect()
 	if err != nil {
 		log.Warnf("InfluxDBInsert NewHTTPClient error,err = %v", err)
 		return
@@ -54,7 +54,7 @@ func Insert(measurement string, tags map[string]string, fields map[string]interf
 
 func Query(cmd string, log *log.TLog) ([]client.Result, error) {
 	var res []client.Result
-	cli, err := connect(log)
+	cli, err := connect()
 	if err != nil {
 		log.Warnf("InfluxDBQuery NewHTTPClient error,err = %v", err)
 		return res, err

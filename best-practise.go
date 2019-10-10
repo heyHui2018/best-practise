@@ -1,25 +1,25 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/best-practise/controller/rpc"
 	"github.com/heyHui2018/best-practise/middleWare"
-	"github.com/heyHui2018/best-practise/pb"
 	"github.com/heyHui2018/best-practise/routers"
+	"github.com/heyHui2018/best-practise/service/clear"
 	"github.com/heyHui2018/best-practise/service/cron"
 	"github.com/heyHui2018/best-practise/service/etcd"
 	"github.com/heyHui2018/best-practise/service/rabbitMQ"
 	"github.com/heyHui2018/log"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 )
 
 func main() {
+	flag.Parse()
 	base.ConfigInit()
 	base.LogInit()
 	base.DbInit()
@@ -32,35 +32,50 @@ func main() {
 	g := routers.InitRouter()
 	g.Use(middleWare.Cors())
 
-	httpPort := fmt.Sprintf(":%d", base.GetConfig().Server.HttpPort)
-	go g.Run(httpPort)
-	log.Infof("Start listening on %s", httpPort)
+	// rpc
+	// rpcPort := fmt.Sprintf(":%d", base.GetConfig().Server.RpcPort)
+	// listen, err := net.Listen("tcp", rpcPort)
+	// if err != nil {
+	// 	log.Fatalf("failed to listen,err = %v", err)
+	// }
+	// s := grpc.NewServer()
+	// pb.RegisterGetServer(s, &rpc.Server{})
+	// reflection.Register(s)
+	// go s.Serve(listen)
+	// log.Infof("rpc start listening on %v", rpcPort)
 
-	rpcPort := fmt.Sprintf(":%d", base.GetConfig().Server.RpcPort)
-	listen, err := net.Listen("tcp", rpcPort)
+	// http
+	httpPort := fmt.Sprintf(":%d", base.GetConfig().Server.HttpPort)
+	var listener net.Listener
+	var err error
+	if *clear.Graceful {
+		f := os.NewFile(3, "")
+		listener, err = net.FileListener(f)
+	} else {
+		listener, err = net.Listen("tcp", httpPort)
+	}
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("failed to listen,err = %v", err)
 	}
-	log.Infof("start listening on %v", rpcPort)
-	s := grpc.NewServer()
-	pb.RegisterGetServer(s, &rpc.Server{})
-	reflection.Register(s)
-	if err := s.Serve(listen); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+	server := &http.Server{
+		Addr:    httpPort,
+		Handler: g,
 	}
+	go server.Serve(listener)
+	log.Infof("http start listening on %v", httpPort)
 
 	signs := make(chan os.Signal)
-	signal.Notify(signs, syscall.SIGKILL, syscall.SIGTERM, syscall.SIGHUP, os.Interrupt, os.Kill, os.Interrupt)
+	signal.Notify(signs, syscall.SIGKILL, syscall.SIGTERM, syscall.SIGINT)
 	for {
-		msg := <-signs
-		log.Infof("Receive signal: %v", msg)
-		clear()
+		select {
+		case sign := <-signs:
+			log.Infof("Receive signal: %v", sign)
+			clear.Clear()
+			if sign == syscall.SIGKILL || sign == syscall.SIGTERM {
+				clear.Stop(server)
+			} else {
+				clear.Restart(server, listener)
+			}
+		}
 	}
-}
-
-func clear() {
-	log.Info("开始停止程序....")
-	rabbitMQ.ConsumeRegularCloseSign = true
-	log.Info("资源清理成功，退出")
-	os.Exit(0)
 }

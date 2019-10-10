@@ -5,7 +5,7 @@ import (
 )
 
 func LogInit() {
-	// log.SetOutputByName(GetConfig().Log.Path)
+	log.SetOutputByName(GetConfig().Log.Path)
 	log.SetLevelByString(GetConfig().Log.Level)
 	log.SetRotateByDay()
 }

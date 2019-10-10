@@ -22,14 +22,14 @@ func Register(c *gin.Context) {
 	start := time.Now()
 	rr := new(models.RegisterRecord)
 	/*
-	bind：struct中添加 binding:"required"
-	为了自定义返回,建议使用ShouldBind...
+		bind：struct中添加 binding:"required"
+		为了自定义返回,建议使用ShouldBind...
 
-		表单：struct中添加 form:"xxx"
-			post:ShouldBind
-			get:ShouldBindQuery
-		Json: struct中添加 json:"xxx"
-			ShouldBindJSON
+			表单：struct中添加 form:"xxx"
+				post:ShouldBind
+				get:ShouldBindQuery
+			Json: struct中添加 json:"xxx"
+				ShouldBindJSON
 	*/
 	err := c.ShouldBind(rr)
 	if err != nil {
