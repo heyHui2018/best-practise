@@ -24,7 +24,6 @@ func Register(c *gin.Context) {
 	/*
 		bind：struct中添加 binding:"required"
 		为了自定义返回,建议使用ShouldBind...
-
 			表单：struct中添加 form:"xxx"
 				post:ShouldBind
 				get:ShouldBindQuery
@@ -43,6 +42,7 @@ func Register(c *gin.Context) {
 	rr.State = c.Request.FormValue("state")
 	rr.Country = c.Request.FormValue("country")
 	t.Infof("Register 入参,rr = %+v", rr)
+
 	// 查询是否已注册
 	getRes, err := rr.GetByEmail()
 	if err != nil {

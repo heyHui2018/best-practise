@@ -3,6 +3,7 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/heyHui2018/best-practise/controller/dataSource"
+	"github.com/heyHui2018/best-practise/controller/qrCode"
 	"github.com/heyHui2018/best-practise/middleWare"
 )
 
@@ -34,6 +35,7 @@ func InitRouter() *gin.Engine {
 		api := pre.Group("/Api")
 		{
 			api.POST("/register", dataSource.Register)
+			api.POST("/generate", qrCode.Generate)
 		}
 	}
 	return g
