@@ -1,4 +1,4 @@
-package models
+package dataSource
 
 // key-questionId,value-Question
 var QuestionMap map[string]*Question

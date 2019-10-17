@@ -3,6 +3,7 @@ package clear
 import (
 	"context"
 	"flag"
+	"github.com/heyHui2018/best-practise/service/nsq"
 	"github.com/heyHui2018/best-practise/service/rabbitMQ"
 	"github.com/heyHui2018/log"
 	"net"
@@ -15,16 +16,25 @@ import (
 
 /*
 http服务优雅重启详见：https://github.com/heyHui2018/graceful
- */
+*/
 
 var Graceful = flag.Bool("graceful", false, "listen on fd open 3 (internal use only)")
 
 func Clear() {
 	// 关闭mq
-	rabbitMQ.ConsumeRegularCloseSign = true
+	rabbitMQ.MQCloseSign = true
 	rabbitMQ.ConsumeChannel.Close()
 	rabbitMQ.ConsumeConn.Close()
 	rabbitMQ.ConsumeWait.Wait()
+	log.Info("MQ已正常关闭")
+	// 关闭nsq
+	nsq.NsqCloseSign = true
+	nsq.NsqStopChan <- ""
+	if nsq.Producer != nil {
+		nsq.Producer.Stop()
+	}
+	nsq.NsqWait.Wait()
+	log.Info("NSQ已正常关闭")
 	// ...
 }
 

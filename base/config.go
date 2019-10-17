@@ -22,6 +22,7 @@ type tomlConfig struct {
 	InfluxDB InfluxDB
 	Etcd     Etcd
 	Docker   Docker
+	Nsqs     map[string]Nsq
 }
 
 type Server struct {
@@ -97,6 +98,12 @@ type Etcd struct {
 type Docker struct {
 	WhiteList []string
 	Interval  int
+}
+
+type Nsq struct {
+	Address string
+	Topic   string
+	Channel string
 }
 
 func ConfigInit() {

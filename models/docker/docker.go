@@ -1,4 +1,4 @@
-package models
+package docker
 
 // 镜像结构
 type Image struct {

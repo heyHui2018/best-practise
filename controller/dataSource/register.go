@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/models"
+	"github.com/heyHui2018/best-practise/models/dataSource"
 	"github.com/heyHui2018/log"
 	"time"
 )
@@ -20,7 +21,7 @@ func Register(c *gin.Context) {
 	t := new(log.TLog)
 	t.TraceId = c.GetString("traceId")
 	start := time.Now()
-	rr := new(models.RegisterRecord)
+	rr := new(dataSource.RegisterRecord)
 	/*
 		bind：struct中添加 binding:"required"
 		为了自定义返回,建议使用ShouldBind...

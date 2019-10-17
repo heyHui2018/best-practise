@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+func CronInit() {
+	go Cron()
+}
+
 func Cron() {
 	c := cron.New()
 	err := c.AddFunc("@hourly", func() {

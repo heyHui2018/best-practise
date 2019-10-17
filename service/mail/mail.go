@@ -3,7 +3,7 @@ package mail
 import (
 	"encoding/json"
 	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/best-practise/models"
+	dataSource2 "github.com/heyHui2018/best-practise/models/dataSource"
 	"github.com/heyHui2018/best-practise/service/dataSource"
 	"github.com/heyHui2018/log"
 	"net/smtp"
@@ -23,7 +23,7 @@ var MailHostMap = map[string]string{
 
 func SendMail(t *log.TLog) {
 	// 从数据库查询当前时刻需发送邮件的用户
-	rr := new(models.RegisterRecord)
+	rr := new(dataSource2.RegisterRecord)
 	rr.Hour = strconv.Itoa(time.Now().Hour())
 	rrList, err := rr.FindByHour()
 	if err != nil {

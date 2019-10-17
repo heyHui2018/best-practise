@@ -3,15 +3,15 @@ package dataSource
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/heyHui2018/best-practise/models"
+	"github.com/heyHui2018/best-practise/models/dataSource"
 	"github.com/heyHui2018/best-practise/service/influxdb"
 	"github.com/heyHui2018/log"
 	"github.com/heyHui2018/utils"
 	"time"
 )
 
-func GetWeather(t *log.TLog, city, state, country string) *models.AirVisualReply {
-	avr := new(models.AirVisualReply)
+func GetWeather(t *log.TLog, city, state, country string) *dataSource.AirVisualReply {
+	avr := new(dataSource.AirVisualReply)
 	url := fmt.Sprintf("http://api.airvisual.com/v2/city?city=%s&state=%s&country=%s&key=cb87fa6b-4e8e-4dc3-9c3b-285ae71dc72a", city, state, country)
 	reply, err := utils.Get(url, 20)
 	if err != nil {

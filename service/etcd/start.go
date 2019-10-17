@@ -2,9 +2,14 @@ package etcd
 
 import (
 	"github.com/heyHui2018/best-practise/base"
+	"github.com/heyHui2018/best-practise/models/etcd"
 	"github.com/heyHui2018/log"
 	"time"
 )
+
+func EtcdInit() {
+	go RegisterStart()
+}
 
 func RegisterStart() {
 	log.Info("RegisterStart 开始")
@@ -31,9 +36,9 @@ func RegisterStart() {
 	go Monitor(ser)
 }
 
-func Monitor(ser *Service) {
+func Monitor(ser *etcd.Service) {
 	for {
-		leaseKeepResp := <-ser.keepAliveChan
+		leaseKeepResp := <-ser.KeepAliveChan
 		if leaseKeepResp == nil {
 			log.Warnf("心跳已停止")
 			go RegisterStart()

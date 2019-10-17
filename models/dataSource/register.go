@@ -1,4 +1,4 @@
-package models
+package dataSource
 
 import (
 	"github.com/heyHui2018/best-practise/base"

@@ -71,6 +71,17 @@ endpoints = ["172.16.16.114:2379"]
 keys = ["timestamp"]
 ip = "172.16.125.18:6667"
 
+[nsqs]
+    [nsqs.consume]
+    address = "172.16.16.114:4150"
+    topic = "c_topic"
+    channel = "c_channel"
+
+    [nsqs.publish]
+    address = "172.16.16.114:4150"
+    topick = "p_topic"
+    channel = "p_channel"
+
 [docker]
 whiteList = ["test1","test2"]
 interval = 60

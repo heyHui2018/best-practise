@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/best-practise/models"
+	"github.com/heyHui2018/best-practise/models/docker"
 	"github.com/heyHui2018/log"
 	"io/ioutil"
 	"net"
@@ -75,7 +75,7 @@ func startContainer(id string, log *log.TLog) error {
 }
 
 // 获取容器列表
-func readContainer() ([]models.Container, error) {
+func readContainer() ([]docker.Container, error) {
 	conn, err := connectDocker() // 建立一个unix连接
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func readContainer() ([]models.Container, error) {
 		return nil, err
 	}
 	body := getBody(result)
-	var containers []models.Container
+	var containers []docker.Container
 	err = json.Unmarshal(body, &containers)
 	if err != nil {
 		return nil, err
@@ -101,7 +101,7 @@ func readContainer() ([]models.Container, error) {
 }
 
 // 获取镜像列表
-func readImage(conn *net.UnixConn) ([]models.Image, error) {
+func readImage(conn *net.UnixConn) ([]docker.Image, error) {
 	_, err := conn.Write([]byte(base.ImagesSock))
 	if err != nil {
 		return nil, err
@@ -113,7 +113,7 @@ func readImage(conn *net.UnixConn) ([]models.Image, error) {
 	}
 
 	body := getBody(result)
-	var images []models.Image
+	var images []docker.Image
 	err = json.Unmarshal(body, &images)
 	if err != nil {
 		return nil, err

@@ -3,7 +3,7 @@ package middleWare
 import (
 	jwt "github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
-	"github.com/heyHui2018/best-practise/models"
+	"github.com/heyHui2018/best-practise/models/user"
 	"github.com/heyHui2018/log"
 	"github.com/heyHui2018/utils"
 	"net/http"
@@ -48,7 +48,7 @@ func JWTInit(jwtAuthorizator JwtAuthorizator) (authMiddleware *jwt.GinJWTMiddlew
 		MaxRefresh:  time.Hour,
 		IdentityKey: identityKey,
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
-			if v, ok := data.(*models.User); ok {
+			if v, ok := data.(*user.User); ok {
 				// maps the claims in the JWT
 				return jwt.MapClaims{
 					"username": v.Username,
@@ -58,17 +58,17 @@ func JWTInit(jwtAuthorizator JwtAuthorizator) (authMiddleware *jwt.GinJWTMiddlew
 		},
 		IdentityHandler: func(c *gin.Context) interface{} {
 			claims := jwt.ExtractClaims(c)
-			return &models.User{
+			return &user.User{
 				Username: claims["username"].(string),
 			}
 		},
 		Authenticator: func(c *gin.Context) (interface{}, error) {
-			var loginVals models.Auth
+			var loginVals user.Auth
 			if err := c.ShouldBind(&loginVals); err != nil {
 				return "", jwt.ErrMissingLoginValues
 			}
 			if loginVals.CheckAuth() {
-				return &models.User{
+				return &user.User{
 					Username: loginVals.Username,
 				}, nil
 			}
@@ -109,7 +109,7 @@ func JWTInit(jwtAuthorizator JwtAuthorizator) (authMiddleware *jwt.GinJWTMiddlew
 
 // role is admin can access
 func AdminAuthorizator(data interface{}, c *gin.Context) bool {
-	if v, ok := data.(*models.User); ok {
+	if v, ok := data.(*user.User); ok {
 		if v.Username == "admin" {
 			return true
 		}

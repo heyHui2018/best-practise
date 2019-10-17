@@ -9,6 +9,7 @@ import (
 	"github.com/heyHui2018/best-practise/service/clear"
 	"github.com/heyHui2018/best-practise/service/cron"
 	"github.com/heyHui2018/best-practise/service/etcd"
+	"github.com/heyHui2018/best-practise/service/nsq"
 	"github.com/heyHui2018/best-practise/service/rabbitMQ"
 	"github.com/heyHui2018/log"
 	"net"
@@ -19,14 +20,15 @@ import (
 )
 
 func main() {
-	flag.Parse()
+	flag.Parse() // 用于优雅重启
+
 	base.ConfigInit()
 	base.LogInit()
 	base.DbInit()
 	rabbitMQ.MQInit()
-
-	go cron.Cron()
-	go etcd.RegisterStart()
+	etcd.EtcdInit()
+	cron.CronInit()
+	nsq.NsqInit()
 
 	g := routers.InitRouter()
 	g.Use(middleWare.Cors())
@@ -70,7 +72,8 @@ func main() {
 		case sign := <-signs:
 			log.Infof("Receive signal: %v", sign)
 			clear.Clear()
-			if sign == syscall.SIGKILL || sign == syscall.SIGTERM {
+			// 此处设置的sign配置可根据实际情况修改
+			if sign == syscall.SIGKILL || sign == syscall.SIGTERM || sign == syscall.SIGINT {
 				clear.Stop(server)
 			} else {
 				clear.Restart(server, listener)

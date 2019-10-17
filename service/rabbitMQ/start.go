@@ -8,13 +8,14 @@ import (
 	"time"
 )
 
-var MQWait *sync.WaitGroup
+var MQWait sync.WaitGroup
 var ConsumeConn *amqp.Connection
 var ConsumeChannel *amqp.Channel
 var PublishConn *amqp.Connection
 var PublishChannel *amqp.Channel
 
 func MQInit() {
+	MQWait.Add(1)
 	go ConsumeStart()
 	go PublishStart()
 }
@@ -52,8 +53,6 @@ func ConsumeStart() {
 		return
 	}
 	log.Info("consumeStart完成")
-	MQWait = new(sync.WaitGroup)
-	MQWait.Add(1)
 	go MQConsume()
 }
 

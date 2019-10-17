@@ -1,4 +1,4 @@
-package models
+package user
 
 type Auth struct {
 	ID       int    `json:"id"`

@@ -3,7 +3,7 @@ package rabbitMQ
 import (
 	"encoding/json"
 	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/best-practise/models"
+	"github.com/heyHui2018/best-practise/models/dataSource"
 	"github.com/heyHui2018/log"
 	"github.com/heyHui2018/utils"
 	"github.com/streadway/amqp"
@@ -12,7 +12,7 @@ import (
 )
 
 var ConsumeWait *sync.WaitGroup
-var ConsumeRegularCloseSign = false
+var MQCloseSign = false
 
 func MQConsume() {
 	if ConsumeChannel == nil {
@@ -46,11 +46,10 @@ func MQConsume() {
 	}
 	ConsumeWait.Wait()
 
-	if ConsumeRegularCloseSign == true {
-		log.Infof("ConsumeRegularCloseSign = %v,ConsumeQueue已正常关闭", ConsumeRegularCloseSign)
+	if MQCloseSign == true {
 		MQWait.Done()
 	} else {
-		log.Infof("ConsumeRegularCloseSign = %v,ConsumeQueue开始重连", ConsumeRegularCloseSign)
+		log.Infof("MQCloseSign = %v,ConsumeQueue开始重连", MQCloseSign)
 		ConsumeChannel.Close()
 		ConsumeChannel = nil
 		ConsumeConn.Close()
@@ -62,7 +61,7 @@ func rangeChannel(msg <-chan amqp.Delivery) {
 	defer ConsumeWait.Done()
 	for m := range msg {
 		traceId := time.Now().Format("20060102150405") + utils.GetRandomString()
-		data := new(models.AirVisualReply)
+		data := new(dataSource.AirVisualReply)
 		err := json.Unmarshal(m.Body, data)
 		if err != nil {
 			log.Warnf("rangeChannel Unmarshal msg 出错,traceId = %v,err = %v,msgInfo = %v", traceId, err, string(m.Body))

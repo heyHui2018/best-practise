@@ -1,6 +1,8 @@
 ### 最佳实践
+
 ***
 有任何意见或建议可加qq：962691478，欢迎交流
+
 ***
 包含如下框架/组件:
 * 1.http框架
@@ -16,7 +18,7 @@
 * 5.消息中间件
     * [x] rabbitMQ github.com/streadway/amqp
     * [x] kafka github.com/Shopify/sarama github.com/bsm/sarama-cluster
-    * [ ] nsq
+    * [ ] nsq github.com/nsqio/go-nsq
 * 6.定时任务
     * [x] cron github.com/robfig/cron
 * 7.服务发现
@@ -30,7 +32,8 @@
 * 10.数据源
     * [x] weather API api.airvisual.com
     * [ ] leetCode github.com/heyHui2018/leetCode
-* 11.其余
+    * [ ] excel
+* 11.others
     * [x] JWT github.com/appleboy/gin-jwt
     * [x] qrCode github.com/skip2/go-qrcode
     * [x] restart gracefully github.com/heyHui2018/graceful
@@ -41,6 +44,7 @@
 * [x] 功能：接口注册登记,定时发送邮件
 * [x] 功能：docker容器监控/重启
 * [ ] 功能：根据传入的题号或关键词,查询题目相关数据
+
 ***
 ### TodoList
 * 优化grpc router
