@@ -24,7 +24,6 @@ func main() {
 	base.LogInit()
 	base.DbInit()
 	rabbitMQ.MQInit()
-	// base.DataInit()
 
 	go cron.Cron()
 	go etcd.RegisterStart()

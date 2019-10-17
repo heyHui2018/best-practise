@@ -13,6 +13,10 @@ import (
 	"time"
 )
 
+/*
+http服务优雅重启详见：https://github.com/heyHui2018/graceful
+ */
+
 var Graceful = flag.Bool("graceful", false, "listen on fd open 3 (internal use only)")
 
 func Clear() {
