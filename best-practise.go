@@ -9,6 +9,7 @@ import (
 	"github.com/heyHui2018/best-practise/service/clear"
 	"github.com/heyHui2018/best-practise/service/cron"
 	"github.com/heyHui2018/best-practise/service/etcd"
+	"github.com/heyHui2018/best-practise/service/kafka"
 	"github.com/heyHui2018/best-practise/service/nsq"
 	"github.com/heyHui2018/best-practise/service/rabbitMQ"
 	"github.com/heyHui2018/log"
@@ -29,6 +30,7 @@ func main() {
 	etcd.EtcdInit()
 	cron.CronInit()
 	nsq.NsqInit()
+	kafka.KafkaInit()
 
 	g := routers.InitRouter()
 	g.Use(middleWare.Cors())
@@ -71,7 +73,6 @@ func main() {
 		select {
 		case sign := <-signs:
 			log.Infof("Receive signal: %v", sign)
-			clear.Clear()
 			// 此处设置的sign配置可根据实际情况修改
 			if sign == syscall.SIGKILL || sign == syscall.SIGTERM || sign == syscall.SIGINT {
 				clear.Stop(server)

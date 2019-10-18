@@ -7,11 +7,13 @@ import (
 	"time"
 )
 
-type Consumer struct {
+type ConsumerS struct {
 	c *nsq.Consumer
 }
 
-func (this *Consumer) HandleMessage(msg *nsq.Message) error {
+func (this *ConsumerS) HandleMessage(msg *nsq.Message) error {
+	NsqWait.Add(1)
+	defer NsqWait.Done()
 	t := new(log.TLog)
 	t.TraceId = time.Now().Format("20060102150405") + utils.GetRandomString()
 	t.Infof("HandleMessage,msg = %v", string(msg.Body))

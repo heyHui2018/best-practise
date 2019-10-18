@@ -8,10 +8,10 @@ import (
 	"time"
 )
 
-var NsqStopChan = make(chan string)
 var NsqCloseSign = false
 var NsqWait sync.WaitGroup
 var Producer *nsq.Producer
+var Consumer *nsq.Consumer
 
 func NsqInit() {
 	go PublishStart()
@@ -19,14 +19,15 @@ func NsqInit() {
 }
 
 func PublishStart() {
+	if NsqCloseSign {
+		return
+	}
 	var err error
 	Producer, err = nsq.NewProducer(base.GetConfig().Nsqs["publish"].Address, nsq.NewConfig())
 	if err != nil {
 		log.Warnf("PublishStart,NewProducer error,err = %v", err)
 		time.Sleep(3 * time.Second)
-		if !NsqCloseSign {
-			go PublishStart()
-		}
+		go PublishStart()
 		return
 	}
 	Producer.SetLogger(nil, 0) // 屏蔽系统日志
@@ -36,47 +37,42 @@ func PublishStart() {
 		Producer.Stop()
 		Producer = nil
 		time.Sleep(3 * time.Second)
-		if !NsqCloseSign {
-			go PublishStart()
-		}
+		go PublishStart()
 		return
 	}
 }
 
 func ConsumeStart() {
-	NsqWait.Add(1)
+	if NsqCloseSign {
+		return
+	}
 	cfg := nsq.NewConfig()
 	cfg.LookupdPollInterval = time.Second // 设置1s重连
 
-	c, err := nsq.NewConsumer(base.GetConfig().Nsqs["consume"].Topic, base.GetConfig().Nsqs["consume"].Channel, cfg) // 新建一个消费者
+	var err error
+	Consumer, err = nsq.NewConsumer(base.GetConfig().Nsqs["consume"].Topic, base.GetConfig().Nsqs["consume"].Channel, cfg) // 新建一个消费者
 	if err != nil {
 		log.Warnf("ConsumeStart,NewConsumer error,err = %v", err)
 		time.Sleep(3 * time.Second)
 		NsqWait.Done()
-		if !NsqCloseSign {
-			go ConsumeStart()
-		}
+		go ConsumeStart()
 		return
 	}
-	c.SetLogger(nil, 0) // 屏蔽系统日志
+	Consumer.SetLogger(nil, 0) // 屏蔽系统日志
 
-	c.AddHandler(&Consumer{}) // 添加消费者接口
+	Consumer.AddHandler(&ConsumerS{}) // 添加消费者接口
+
+	Consumer.ChangeMaxInFlight(3) // 设置一次接收消息数量
 
 	// 连接NSQLookupd
-
-	err = c.ConnectToNSQLookupd(base.GetConfig().Nsqs["consume"].Address)
+	err = Consumer.ConnectToNSQLookupd(base.GetConfig().Nsqs["consume"].Address)
 	if err != nil {
 		log.Warnf("ConsumeStart,ConnectToNSQLookupd error,err = %v", err)
 		time.Sleep(3 * time.Second)
 		NsqWait.Done()
-		if !NsqCloseSign {
-			go ConsumeStart()
-		}
+		go ConsumeStart()
 		return
 	}
-	<-NsqStopChan
-	c.Stop()
-	NsqWait.Done()
 	// 连接多个nsqd
 	// c.ConnectToNSQDs()
 	// 连接单个nsqd

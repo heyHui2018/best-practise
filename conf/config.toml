@@ -54,8 +54,10 @@ path = "best-practise.log"
 level = "info"
 
 [kafka]
-hosts = "172.16.16.114:9092"
-topic = "test"
+hosts = ["172.16.16.114:9092"]
+consumeTopic = ["consume_topic_test"]
+ConsumeGroupId = "consume_group_id_test"
+publishTopic = "publish_test"
 key = "key"
 
 [InfluxDB]

@@ -9,6 +9,7 @@ import (
 )
 
 var MQWait sync.WaitGroup
+var MQCloseSign = false
 var ConsumeConn *amqp.Connection
 var ConsumeChannel *amqp.Channel
 var PublishConn *amqp.Connection
@@ -21,6 +22,9 @@ func MQInit() {
 }
 
 func ConsumeStart() {
+	if MQCloseSign {
+		return
+	}
 	ConsumeConnect()
 	exchange := base.GetConfig().MQs["consume"].Exchange
 	err := ConsumeChannel.ExchangeDeclare(exchange, "direct", true, false, false, false, nil)
@@ -53,7 +57,7 @@ func ConsumeStart() {
 		return
 	}
 	log.Info("consumeStart完成")
-	go MQConsume()
+	go Consume()
 }
 
 func PublishStart() {

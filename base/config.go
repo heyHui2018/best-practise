@@ -75,9 +75,11 @@ type MQ struct {
 }
 
 type Kafka struct {
-	Hosts string
-	Topic string
-	Key   string
+	Hosts          []string
+	ConsumeTopic   []string
+	ConsumeGroupId string
+	PublishTopic   string
+	Key            string
 }
 
 type InfluxDB struct {

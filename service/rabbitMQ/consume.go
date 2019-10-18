@@ -11,10 +11,9 @@ import (
 	"time"
 )
 
-var ConsumeWait *sync.WaitGroup
-var MQCloseSign = false
+var wait sync.WaitGroup
 
-func MQConsume() {
+func Consume() {
 	if ConsumeChannel == nil {
 		ConsumeConnect()
 	}
@@ -39,14 +38,13 @@ func MQConsume() {
 		return
 	}
 
-	ConsumeWait = new(sync.WaitGroup)
 	for i := 0; i < base.GetConfig().MQs["consume"].ChanRangeNum; i++ {
-		ConsumeWait.Add(1)
+		wait.Add(1)
 		go rangeChannel(msg)
 	}
-	ConsumeWait.Wait()
+	wait.Wait()
 
-	if MQCloseSign == true {
+	if MQCloseSign {
 		MQWait.Done()
 	} else {
 		log.Infof("MQCloseSign = %v,ConsumeQueue开始重连", MQCloseSign)
@@ -58,16 +56,16 @@ func MQConsume() {
 }
 
 func rangeChannel(msg <-chan amqp.Delivery) {
-	defer ConsumeWait.Done()
+	defer wait.Done()
 	for m := range msg {
 		traceId := time.Now().Format("20060102150405") + utils.GetRandomString()
 		data := new(dataSource.AirVisualReply)
 		err := json.Unmarshal(m.Body, data)
 		if err != nil {
 			log.Warnf("rangeChannel Unmarshal msg 出错,traceId = %v,err = %v,msgInfo = %v", traceId, err, string(m.Body))
-		} else {
-
+			continue
 		}
+		// do something with data
 		m.Ack(false)
 	}
 }
