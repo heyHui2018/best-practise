@@ -6,19 +6,19 @@
 ***
 包含如下框架/组件:
 * 1.http框架
-    * [x] gin  github.com/gin-gonic/gin
+    * [x] gin github.com/gin-gonic/gin
 * 2.rpc框架
     * [x] grpc google.golang.org/grpc
 * 3.配置读取
     * [x] toml github.com/BurntSushi/toml
 * 4.数据存储
-    * [x] mysql github.com/go-sql-driver/mysql github.com/go-xorm/xorm
-    * [x] redis github.com/garyburd/redigo/redis
-    * [x] influxDB github.com/influxdata/influxdb/client/v2
+    * [x] mysql     github.com/go-sql-driver/mysql github.com/go-xorm/xorm
+    * [x] redis     github.com/garyburd/redigo/redis
+    * [x] influxDB  github.com/influxdata/influxdb/client/v2
 * 5.消息中间件
-    * [x] rabbitMQ github.com/streadway/amqp
-    * [x] kafka github.com/Shopify/sarama github.com/bsm/sarama-cluster
-    * [ ] nsq github.com/nsqio/go-nsq
+    * [x] rabbitMQ  github.com/streadway/amqp
+    * [x] kafka     github.com/Shopify/sarama github.com/bsm/sarama-cluster
+    * [x] nsq       github.com/nsqio/go-nsq
 * 6.定时任务
     * [x] cron github.com/robfig/cron
 * 7.服务发现
@@ -30,13 +30,13 @@
     * [x] 邮件 net/smtp
     * [ ] 短信
 * 10.数据源
-    * [x] weather API api.airvisual.com
-    * [ ] leetCode github.com/heyHui2018/leetCode
+    * [x] weather API   api.airvisual.com
+    * [ ] leetCode      github.com/heyHui2018/leetCode
     * [ ] excel
 * 11.others
-    * [x] JWT github.com/appleboy/gin-jwt
-    * [x] qrCode github.com/skip2/go-qrcode
-    * [x] restart gracefully github.com/heyHui2018/graceful
+    * [x] JWT       github.com/appleboy/gin-jwt
+    * [x] qrCode    github.com/skip2/go-qrcode
+    * [x] restart   gracefully github.com/heyHui2018/graceful
     * [x] docker容器监控/重启
 
 ***

@@ -20,5 +20,3 @@
 * 消费者通过http查询nsqlookupd获取nsqd地址,再连接nsqd,此法客户端会轮询nsqlookupd
 * 生产者必须直连nsqd且断开后需手动重连
 * 消费者可以同时接收不同nsqd节点的同名topic数据
-
-#### 

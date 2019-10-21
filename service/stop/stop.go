@@ -1,4 +1,4 @@
-package clear
+package stop
 
 import (
 	"context"
@@ -83,7 +83,7 @@ func Stop(server *http.Server) {
 	defer cancel()
 	err := server.Shutdown(cxt)
 	if err != nil {
-		log.Warnf("clear,server.Shutdown error,err = %v", err)
+		log.Warnf("Stop,server.Shutdown error,err = %v", err)
 	}
 	StopInput()
 }
@@ -92,12 +92,12 @@ func Restart(server *http.Server, listener net.Listener) {
 	log.Info("开始重启...")
 	l, ok := listener.(*net.TCPListener)
 	if !ok {
-		log.Warnf("reload,listener's type is not *net.TCPListener,type = %v", reflect.TypeOf(listener).Name())
+		log.Warnf("Restart,listener's type is not *net.TCPListener,type = %v", reflect.TypeOf(listener).Name())
 		return
 	}
 	file, err := l.File()
 	if err != nil {
-		log.Warnf("reload,l.File error,err = %v", err)
+		log.Warnf("Restart,l.File error,err = %v", err)
 		return
 	}
 	args := os.Args

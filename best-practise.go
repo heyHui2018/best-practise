@@ -6,12 +6,12 @@ import (
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/middleWare"
 	"github.com/heyHui2018/best-practise/routers"
-	"github.com/heyHui2018/best-practise/service/clear"
 	"github.com/heyHui2018/best-practise/service/cron"
 	"github.com/heyHui2018/best-practise/service/etcd"
 	"github.com/heyHui2018/best-practise/service/kafka"
 	"github.com/heyHui2018/best-practise/service/nsq"
 	"github.com/heyHui2018/best-practise/service/rabbitMQ"
+	"github.com/heyHui2018/best-practise/service/stop"
 	"github.com/heyHui2018/log"
 	"net"
 	"net/http"
@@ -51,7 +51,7 @@ func main() {
 	httpPort := fmt.Sprintf(":%d", base.GetConfig().Server.HttpPort)
 	var listener net.Listener
 	var err error
-	if *clear.Graceful {
+	if *stop.Graceful {
 		f := os.NewFile(3, "")
 		listener, err = net.FileListener(f)
 	} else {
@@ -75,9 +75,9 @@ func main() {
 			log.Infof("Receive signal: %v", sign)
 			// 此处设置的sign配置可根据实际情况修改
 			if sign == syscall.SIGKILL || sign == syscall.SIGTERM || sign == syscall.SIGINT {
-				clear.Stop(server)
+				stop.Stop(server)
 			} else {
-				clear.Restart(server, listener)
+				stop.Restart(server, listener)
 			}
 		}
 	}

@@ -102,7 +102,6 @@ func AsyncPublishStart() {
 		return
 	}
 	var err error
-	log.Info(base.GetConfig().Kafka.Hosts)
 	*AsyncProducer, err = sarama.NewAsyncProducer(base.GetConfig().Kafka.Hosts, config())
 	if err != nil {
 		log.Warnf("AsyncProduce,NewSyncProducer error,err = %v", err)
