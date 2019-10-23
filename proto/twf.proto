@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package test;
+
+message UserInfoRequest {
+    string greet = 1;
+}
+
+message UserInfoResponse {
+    string reply = 1;
+}
+
+message Message {
+    string type = 1;
+    bytes data = 2;
+}
+
+service User {
+    rpc Communicate (stream Message) returns (stream Message) {
+    }
+}

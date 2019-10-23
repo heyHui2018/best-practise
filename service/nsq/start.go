@@ -25,7 +25,7 @@ func PublishStart() {
 	var err error
 	Producer, err = nsq.NewProducer(base.GetConfig().Nsqs["publish"].Address, nsq.NewConfig())
 	if err != nil {
-		log.Warnf("PublishStart,NewProducer error,err = %v", err)
+		log.Warnf("NsqPublishStart,NewProducer error,err = %v", err)
 		time.Sleep(3 * time.Second)
 		go PublishStart()
 		return
@@ -33,7 +33,7 @@ func PublishStart() {
 	Producer.SetLogger(nil, 0) // 屏蔽系统日志
 	err = Producer.Ping()
 	if err != nil {
-		log.Warnf("PublishStart,Ping error,err = %v", err)
+		log.Warnf("NsqPublishStart,Ping error,err = %v", err)
 		Producer.Stop()
 		Producer = nil
 		time.Sleep(3 * time.Second)
@@ -52,7 +52,7 @@ func ConsumeStart() {
 	var err error
 	Consumer, err = nsq.NewConsumer(base.GetConfig().Nsqs["consume"].Topic, base.GetConfig().Nsqs["consume"].Channel, cfg) // 新建一个消费者
 	if err != nil {
-		log.Warnf("ConsumeStart,NewConsumer error,err = %v", err)
+		log.Warnf("NsqConsumeStart,NewConsumer error,err = %v", err)
 		time.Sleep(3 * time.Second)
 		NsqWait.Done()
 		go ConsumeStart()
@@ -67,7 +67,7 @@ func ConsumeStart() {
 	// 连接NSQLookupd
 	err = Consumer.ConnectToNSQLookupd(base.GetConfig().Nsqs["consume"].Address)
 	if err != nil {
-		log.Warnf("ConsumeStart,ConnectToNSQLookupd error,err = %v", err)
+		log.Warnf("NsqConsumeStart,ConnectToNSQLookupd error,err = %v", err)
 		time.Sleep(3 * time.Second)
 		NsqWait.Done()
 		go ConsumeStart()

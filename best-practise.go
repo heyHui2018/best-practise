@@ -4,15 +4,17 @@ import (
 	"flag"
 	"fmt"
 	"github.com/heyHui2018/best-practise/base"
+	"github.com/heyHui2018/best-practise/controller/rpc"
 	"github.com/heyHui2018/best-practise/middleWare"
+	"github.com/heyHui2018/best-practise/pb"
 	"github.com/heyHui2018/best-practise/routers"
 	"github.com/heyHui2018/best-practise/service/cron"
 	"github.com/heyHui2018/best-practise/service/etcd"
-	"github.com/heyHui2018/best-practise/service/kafka"
-	"github.com/heyHui2018/best-practise/service/nsq"
 	"github.com/heyHui2018/best-practise/service/rabbitMQ"
 	"github.com/heyHui2018/best-practise/service/stop"
 	"github.com/heyHui2018/log"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"net"
 	"net/http"
 	"os"
@@ -29,28 +31,31 @@ func main() {
 	rabbitMQ.MQInit()
 	etcd.EtcdInit()
 	cron.CronInit()
-	nsq.NsqInit()
-	kafka.KafkaInit()
+	// nsq.NsqInit()
+	// kafka.KafkaInit()
 
 	g := routers.InitRouter()
 	g.Use(middleWare.Cors())
 
+	var err error
+
 	// rpc
-	// rpcPort := fmt.Sprintf(":%d", base.GetConfig().Server.RpcPort)
-	// listen, err := net.Listen("tcp", rpcPort)
-	// if err != nil {
-	// 	log.Fatalf("failed to listen,err = %v", err)
-	// }
-	// s := grpc.NewServer()
-	// pb.RegisterGetServer(s, &rpc.Server{})
-	// reflection.Register(s)
-	// go s.Serve(listen)
-	// log.Infof("rpc start listening on %v", rpcPort)
+	rpcPort := fmt.Sprintf(":%d", base.GetConfig().Server.RpcPort)
+	listen, err := net.Listen("tcp", rpcPort)
+	if err != nil {
+		log.Fatalf("failed to listen,err = %v", err)
+	}
+	s := grpc.NewServer()
+	pb.RegisterGetServer(s, &rpc.Server{})
+	pb.RegisterUserServer(s, &rpc.Server{})
+	reflection.Register(s)
+	go s.Serve(listen)
+	log.Infof("rpc start listening on %v", rpcPort)
 
 	// http
 	httpPort := fmt.Sprintf(":%d", base.GetConfig().Server.HttpPort)
 	var listener net.Listener
-	var err error
+
 	if *stop.Graceful {
 		f := os.NewFile(3, "")
 		listener, err = net.FileListener(f)
