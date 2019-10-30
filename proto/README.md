@@ -5,7 +5,7 @@ protoc -I . --go_out=plugins=grpc:. route_guide.proto
 protoc -I proto/ proto/order.proto --go_out=plugins=grpc:order
 ```
 * --go_out用于指定生成源码的保存路径
-* -I是-IPATH的简写，用于指定查找import文件的路径，可以指定多个
+* -I是-IPATH简写，用于指定查找import文件的路径，可以指定多个
 * 最后的order是编译的grpc文件的存储路径
 * route_guide.proto为文件名
 

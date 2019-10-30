@@ -2,7 +2,7 @@ package etcd
 
 import (
 	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/best-practise/models/etcd"
+	"github.com/heyHui2018/best-practise/model/etcd"
 	"github.com/heyHui2018/log"
 	"time"
 )

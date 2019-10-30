@@ -1,11 +1,13 @@
 package rpc
 
 import (
-	"github.com/heyHui2018/best-practise/pb"
-	"github.com/heyHui2018/log"
-	"github.com/heyHui2018/utils"
 	"io"
 	"time"
+
+	"github.com/heyHui2018/log"
+	"github.com/heyHui2018/utils"
+
+	"github.com/heyHui2018/best-practise/pb"
 )
 
 func (this *Server) Communicate(stream pb.User_CommunicateServer) error {

@@ -12,12 +12,10 @@ import (
 var KafkaWait sync.WaitGroup
 var KafkaCloseSign = false
 var Consumer *cluster.Consumer
-var SyncProducer *sarama.SyncProducer
-var AsyncProducer *sarama.AsyncProducer
+var SyncProducer sarama.SyncProducer
+var AsyncProducer sarama.AsyncProducer
 
 func KafkaInit() {
-	SyncProducer = new(sarama.SyncProducer)
-	AsyncProducer = new(sarama.AsyncProducer)
 	go SyncPublishStart()
 	go AsyncPublishStart()
 	KafkaWait.Add(1)
@@ -88,7 +86,7 @@ func SyncPublishStart() {
 		return
 	}
 	var err error
-	*SyncProducer, err = sarama.NewSyncProducer(base.GetConfig().Kafka.Hosts, config())
+	SyncProducer, err = sarama.NewSyncProducer(base.GetConfig().Kafka.Hosts, config())
 	if err != nil {
 		log.Warnf("SyncPublishStart,NewSyncProducer error,err = %v", err)
 		time.Sleep(3 * time.Second)
@@ -102,7 +100,7 @@ func AsyncPublishStart() {
 		return
 	}
 	var err error
-	*AsyncProducer, err = sarama.NewAsyncProducer(base.GetConfig().Kafka.Hosts, config())
+	AsyncProducer, err = sarama.NewAsyncProducer(base.GetConfig().Kafka.Hosts, config())
 	if err != nil {
 		log.Warnf("AsyncProduce,NewSyncProducer error,err = %v", err)
 		time.Sleep(3 * time.Second)

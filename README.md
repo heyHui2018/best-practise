@@ -9,6 +9,8 @@
     * [x] gin github.com/gin-gonic/gin
 * 2.rpc框架
     * [x] grpc google.golang.org/grpc
+        * [x] 普通模式
+        * [x] 双向流模式
 * 3.配置读取
     * [x] toml github.com/BurntSushi/toml
 * 4.数据存储
@@ -32,12 +34,15 @@
 * 10.数据源
     * [x] weather API   api.airvisual.com
     * [ ] leetCode      github.com/heyHui2018/leetCode
-    * [ ] excel
-* 11.others
-    * [x] JWT       github.com/appleboy/gin-jwt
+    * [ ] excel         github.com/tealeg/xlsx
+* 11.安全
+    * [x] JWT github.com/appleboy/gin-jwt
+    * [ ] TLS google.golang.org/grpc/credentials
+* 12.others
     * [x] qrCode    github.com/skip2/go-qrcode
     * [x] restart   gracefully github.com/heyHui2018/graceful
     * [x] docker容器监控/重启
+    * [ ] 图片处理
 
 ***
 * [x] 功能：延迟消息 rabbitMQ死信队列

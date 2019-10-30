@@ -1,14 +1,40 @@
 package middleWare
 
 import (
+	"context"
+	"net/http"
+	"runtime/debug"
+	"time"
+
 	jwt "github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
-	"github.com/heyHui2018/best-practise/models/user"
 	"github.com/heyHui2018/log"
 	"github.com/heyHui2018/utils"
-	"net/http"
-	"time"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
+	"github.com/heyHui2018/best-practise/model/user"
 )
+
+// 拦截器-input/output日志输出
+func LoggingInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	log.Infof("gRPC method: %s, %v", info.FullMethod, req)
+	resp, err := handler(ctx, req)
+	log.Infof("gRPC method: %s, %v", info.FullMethod, resp)
+	return resp, err
+}
+
+// 拦截器-recover
+func RecoveryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	defer func() {
+		if e := recover(); e != nil {
+			debug.PrintStack()
+			err = status.Errorf(codes.Internal, "Panic err: %v", e)
+		}
+	}()
+	return handler(ctx, req)
+}
 
 // 跨域支持
 func Cors() gin.HandlerFunc {

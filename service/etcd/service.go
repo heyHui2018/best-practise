@@ -2,7 +2,7 @@ package etcd
 
 import (
 	"context"
-	"github.com/heyHui2018/best-practise/models/etcd"
+	"github.com/heyHui2018/best-practise/model/etcd"
 	"go.etcd.io/etcd/clientv3"
 	"time"
 )

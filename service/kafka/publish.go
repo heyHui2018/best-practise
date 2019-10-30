@@ -19,7 +19,7 @@ func SyncProduce(log log.TLog, message string) {
 	msg.Key = sarama.StringEncoder(base.GetConfig().Kafka.Key)
 	msg.Value = sarama.ByteEncoder(message)
 
-	partition, offset, err := (*SyncProducer).SendMessage(msg)
+	partition, offset, err := SyncProducer.SendMessage(msg)
 	if err != nil {
 		log.Warnf("SyncProduce,SendMessage error,err = %v", err)
 		return
@@ -45,7 +45,7 @@ func AsyncProduce(log log.TLog) {
 				return
 			}
 		}
-	}(*AsyncProducer)
+	}(AsyncProducer)
 
 	for {
 		select {
@@ -62,7 +62,7 @@ func AsyncProduce(log log.TLog) {
 				Key:   sarama.StringEncoder(base.GetConfig().Kafka.Key),
 				Value: sarama.ByteEncoder(data),
 			}
-			(*AsyncProducer).Input() <- sendMsg
+			AsyncProducer.Input() <- sendMsg
 		}
 	}
 

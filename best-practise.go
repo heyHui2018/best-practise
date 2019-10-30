@@ -3,6 +3,16 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/heyHui2018/log"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
+
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/controller/rpc"
 	"github.com/heyHui2018/best-practise/middleWare"
@@ -12,14 +22,6 @@ import (
 	"github.com/heyHui2018/best-practise/service/etcd"
 	"github.com/heyHui2018/best-practise/service/rabbitMQ"
 	"github.com/heyHui2018/best-practise/service/stop"
-	"github.com/heyHui2018/log"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
-	"net"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 func main() {
@@ -38,6 +40,15 @@ func main() {
 	g.Use(middleWare.Cors())
 
 	var err error
+	var opts []grpc.ServerOption
+
+	// tls
+	// c := tls.TLS()
+	// c := tls.CATLS()
+	// opts = append(opts, grpc.Creds(c))
+
+	// 拦截器
+	// opts = append(opts, grpc_middleware.WithUnaryServerChain(middleWare.LoggingInterceptor, middleWare.RecoveryInterceptor))
 
 	// rpc
 	rpcPort := fmt.Sprintf(":%d", base.GetConfig().Server.RpcPort)
@@ -45,7 +56,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen,err = %v", err)
 	}
-	s := grpc.NewServer()
+	s := grpc.NewServer(opts...)
 	pb.RegisterGetServer(s, &rpc.Server{})
 	pb.RegisterUserServer(s, &rpc.Server{})
 	reflection.Register(s)

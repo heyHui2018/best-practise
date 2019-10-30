@@ -1,12 +1,14 @@
 package dataSource
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/best-practise/models"
-	"github.com/heyHui2018/best-practise/models/dataSource"
-	"github.com/heyHui2018/log"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/heyHui2018/log"
+
+	"github.com/heyHui2018/best-practise/base"
+	"github.com/heyHui2018/best-practise/model"
+	"github.com/heyHui2018/best-practise/model/dataSource"
 )
 
 /*
@@ -34,7 +36,7 @@ func Register(c *gin.Context) {
 	err := c.ShouldBind(rr)
 	if err != nil {
 		t.Warnf("Register 入参 error,err = %v", err)
-		models.Fail(base.BadRequest, c)
+		model.Fail(base.BadRequest, c)
 		return
 	}
 	rr.Email = c.Request.FormValue("email")
@@ -48,7 +50,7 @@ func Register(c *gin.Context) {
 	getRes, err := rr.GetByEmail()
 	if err != nil {
 		t.Warnf("Register GetByEmail error,err = %v", err)
-		models.Fail(base.SystemError, c)
+		model.Fail(base.SystemError, c)
 		return
 	}
 	if getRes.Id > 0 {
@@ -61,10 +63,10 @@ func Register(c *gin.Context) {
 		err = rr.Insert()
 		if err != nil {
 			t.Warnf("Register Insert error,err = %v", err)
-			models.Fail(base.SystemError, c)
+			model.Fail(base.SystemError, c)
 			return
 		}
 	}
 	t.Infof("Register 完成,耗时 = %v", time.Since(start))
-	models.Success(nil, c)
+	model.Success(nil, c)
 }

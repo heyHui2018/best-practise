@@ -3,16 +3,18 @@ package stop
 import (
 	"context"
 	"flag"
-	"github.com/heyHui2018/best-practise/service/kafka"
-	"github.com/heyHui2018/best-practise/service/nsq"
-	"github.com/heyHui2018/best-practise/service/rabbitMQ"
-	"github.com/heyHui2018/log"
 	"net"
 	"net/http"
 	"os"
 	"os/exec"
 	"reflect"
 	"time"
+
+	"github.com/heyHui2018/log"
+
+	"github.com/heyHui2018/best-practise/service/kafka"
+	"github.com/heyHui2018/best-practise/service/nsq"
+	"github.com/heyHui2018/best-practise/service/rabbitMQ"
 )
 
 /*
@@ -68,11 +70,11 @@ func StopOutput() {
 	if nsq.Producer != nil {
 		nsq.Producer.Stop()
 	}
-	if *kafka.SyncProducer != nil {
-		(*kafka.SyncProducer).Close()
+	if kafka.SyncProducer != nil {
+		kafka.SyncProducer.Close()
 	}
-	if *kafka.AsyncProducer != nil {
-		(*kafka.AsyncProducer).Close()
+	if kafka.AsyncProducer != nil {
+		kafka.AsyncProducer.Close()
 	}
 }
 
