@@ -10,7 +10,7 @@ import (
 	img "github.com/heyHui2018/best-practise/model/image"
 )
 
-func Cut(t *log.TLog, img *img.Image) *bytes.Buffer {
+func Cut(t *log.TLog, img *img.Image) (*bytes.Buffer, error) {
 	rect := new(image.Rectangle)
 	rect.Min.X = img.X0
 	rect.Min.Y = img.Y0
@@ -20,7 +20,7 @@ func Cut(t *log.TLog, img *img.Image) *bytes.Buffer {
 	writer, err := Encode(img)
 	if err != nil {
 		t.Warnf("Cut Encode error,err = %v,format = %v", err, img.Format)
-		return nil
+		return nil, err
 	}
-	return writer
+	return writer, nil
 }

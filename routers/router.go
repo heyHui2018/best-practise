@@ -42,6 +42,8 @@ func InitRouter() *gin.Engine {
 			img := api.Group("/img")
 			{
 				img.POST("/resize", image.Resize)
+				img.POST("/cut", image.Cut)
+				img.POST("/watermark", image.Watermark)
 			}
 		}
 	}

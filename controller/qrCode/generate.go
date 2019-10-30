@@ -1,12 +1,14 @@
 package qrCode
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
-	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/best-practise/model"
 	"github.com/heyHui2018/log"
 	"github.com/skip2/go-qrcode"
-	"time"
+
+	"github.com/heyHui2018/best-practise/base"
+	"github.com/heyHui2018/best-practise/model"
 )
 
 /*

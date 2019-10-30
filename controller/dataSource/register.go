@@ -12,11 +12,11 @@ import (
 )
 
 /*
-param:city 城市
-      state 省
-      country 国家
-      email 邮箱
-      hour 定时发送时间,24小时制
+param:city 		城市
+      state 	省
+      country 	国家
+      email 	邮箱
+      hour 		定时发送时间,24小时制
 */
 
 func Register(c *gin.Context) {
@@ -35,7 +35,7 @@ func Register(c *gin.Context) {
 	*/
 	err := c.ShouldBind(rr)
 	if err != nil {
-		t.Warnf("Register 入参 error,err = %v", err)
+		t.Warnf("Register ShouldBind error,err = %v", err)
 		model.Fail(base.BadRequest, c)
 		return
 	}
