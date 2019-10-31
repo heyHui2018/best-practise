@@ -1,10 +1,12 @@
 package etcd
 
 import (
+	"time"
+
+	"github.com/heyHui2018/log"
+
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/model/etcd"
-	"github.com/heyHui2018/log"
-	"time"
 )
 
 func EtcdInit() {

@@ -1,4 +1,4 @@
-package image
+package img
 
 import (
 	"bytes"
@@ -12,7 +12,7 @@ import (
 	// _ "github.com/chai2010/webp"
 	"golang.org/x/image/bmp"
 
-	img "github.com/heyHui2018/best-practise/model/image"
+	img "github.com/heyHui2018/best-practise/model/img"
 )
 
 func Decode(body io.Reader, img *img.Image) error {

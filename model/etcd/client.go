@@ -3,8 +3,9 @@ package etcd
 import (
 	"context"
 	"errors"
-	"go.etcd.io/etcd/clientv3"
 	"sync"
+
+	"go.etcd.io/etcd/clientv3"
 )
 
 type Client struct {

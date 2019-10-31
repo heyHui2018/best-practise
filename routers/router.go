@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/heyHui2018/best-practise/controller/dataSource"
-	"github.com/heyHui2018/best-practise/controller/image"
+	"github.com/heyHui2018/best-practise/controller/img"
 	"github.com/heyHui2018/best-practise/controller/qrCode"
 	"github.com/heyHui2018/best-practise/middleWare"
 )
@@ -39,11 +39,11 @@ func InitRouter() *gin.Engine {
 			api.POST("/register", dataSource.Register)
 			api.POST("/generate", qrCode.Generate)
 
-			img := api.Group("/img")
+			m := api.Group("/img")
 			{
-				img.POST("/resize", image.Resize)
-				img.POST("/cut", image.Cut)
-				img.POST("/watermark", image.Watermark)
+				m.POST("/resize", img.Resize)
+				m.POST("/cut", img.Cut)
+				m.POST("/watermark", img.Watermark)
 			}
 		}
 	}

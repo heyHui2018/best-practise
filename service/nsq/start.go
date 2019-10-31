@@ -1,11 +1,13 @@
 package nsq
 
 import (
-	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/log"
-	"github.com/nsqio/go-nsq"
 	"sync"
 	"time"
+
+	"github.com/heyHui2018/log"
+	"github.com/nsqio/go-nsq"
+
+	"github.com/heyHui2018/best-practise/base"
 )
 
 var NsqCloseSign = false

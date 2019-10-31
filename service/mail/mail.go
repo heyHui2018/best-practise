@@ -2,14 +2,16 @@ package mail
 
 import (
 	"encoding/json"
-	"github.com/heyHui2018/best-practise/base"
-	dataSource2 "github.com/heyHui2018/best-practise/model/dataSource"
-	"github.com/heyHui2018/best-practise/service/dataSource"
-	"github.com/heyHui2018/log"
 	"net/smtp"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/heyHui2018/log"
+
+	"github.com/heyHui2018/best-practise/base"
+	dataSource2 "github.com/heyHui2018/best-practise/model/dataSource"
+	"github.com/heyHui2018/best-practise/service/dataSource"
 )
 
 var MailHostMap = map[string]string{

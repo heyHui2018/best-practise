@@ -6,13 +6,13 @@
 ***
 包含如下框架/组件:
 * 1.http框架
-    * [x] gin github.com/gin-gonic/gin
+    * [x] gin       github.com/gin-gonic/gin
 * 2.rpc框架
-    * [x] grpc google.golang.org/grpc
+    * [x] grpc      google.golang.org/grpc
         * [x] 普通模式
         * [x] 双向流模式
 * 3.配置读取
-    * [x] toml github.com/BurntSushi/toml
+    * [x] toml      github.com/BurntSushi/toml
 * 4.数据存储
     * [x] mysql     github.com/go-sql-driver/mysql github.com/go-xorm/xorm
     * [x] redis     github.com/garyburd/redigo/redis
@@ -22,27 +22,30 @@
     * [x] kafka     github.com/Shopify/sarama github.com/bsm/sarama-cluster
     * [x] nsq       github.com/nsqio/go-nsq
 * 6.定时任务
-    * [x] cron github.com/robfig/cron
+    * [x] cron      github.com/robfig/cron
 * 7.服务发现
-    * [x] etcd go.etcd.io/etcd/clientv3
+    * [x] etcd      go.etcd.io/etcd/clientv3
 * 8.分布式锁
-    * [x] redis github.com/garyburd/redigo/redis
+    * [x] redis     github.com/garyburd/redigo/redis
     * [ ] zookeeper
 * 9.提醒
-    * [x] 邮件 net/smtp
+    * [x] 邮件       net/smtp
     * [ ] 短信
 * 10.数据源
     * [x] weather API   api.airvisual.com
     * [ ] leetCode      github.com/heyHui2018/leetCode
     * [ ] excel         github.com/tealeg/xlsx
 * 11.安全
-    * [x] JWT github.com/appleboy/gin-jwt
-    * [ ] TLS google.golang.org/grpc/credentials
+    * [x] JWT           github.com/appleboy/gin-jwt
+    * [x] TLS           google.golang.org/grpc/credentials
 * 12.others
-    * [x] qrCode    github.com/skip2/go-qrcode
-    * [x] restart   gracefully github.com/heyHui2018/graceful
+    * [x] qrCode        github.com/skip2/go-qrcode
+    * [x] restart       gracefully github.com/heyHui2018/graceful
     * [x] docker容器监控/重启
-    * [ ] 图片处理
+    * [x] 图片处理       github.com/disintegration/imaging
+        * [x] 裁剪
+        * [x] 缩放
+        * [x] 水印(图片水印/文字水印) github.com/golang/freetype
 
 ***
 * [x] 功能：延迟消息 rabbitMQ死信队列

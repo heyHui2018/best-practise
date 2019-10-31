@@ -1,9 +1,11 @@
 package model
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/heyHui2018/best-practise/base"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/heyHui2018/best-practise/base"
 )
 
 type Response struct {

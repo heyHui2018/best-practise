@@ -2,10 +2,12 @@ package influxdb
 
 import (
 	"fmt"
-	"github.com/heyHui2018/best-practise/base"
+	"time"
+
 	"github.com/heyHui2018/log"
 	"github.com/influxdata/influxdb/client/v2"
-	"time"
+
+	"github.com/heyHui2018/best-practise/base"
 )
 
 func connect() (client.Client, error) {

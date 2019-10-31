@@ -2,13 +2,15 @@ package rabbitMQ
 
 import (
 	"encoding/json"
-	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/best-practise/model/dataSource"
+	"sync"
+	"time"
+
 	"github.com/heyHui2018/log"
 	"github.com/heyHui2018/utils"
 	"github.com/streadway/amqp"
-	"sync"
-	"time"
+
+	"github.com/heyHui2018/best-practise/base"
+	"github.com/heyHui2018/best-practise/model/dataSource"
 )
 
 var wait sync.WaitGroup

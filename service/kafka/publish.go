@@ -2,10 +2,12 @@ package kafka
 
 import (
 	"encoding/json"
-	"github.com/Shopify/sarama"
-	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/log"
 	"time"
+
+	"github.com/Shopify/sarama"
+	"github.com/heyHui2018/log"
+
+	"github.com/heyHui2018/best-practise/base"
 )
 
 var StopChan = make(chan struct{})

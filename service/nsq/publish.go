@@ -1,8 +1,9 @@
 package nsq
 
 import (
-	"github.com/heyHui2018/log"
 	"time"
+
+	"github.com/heyHui2018/log"
 )
 
 func Publish(t log.TLog, topic, msg string) {

@@ -1,11 +1,13 @@
 package rabbitMQ
 
 import (
-	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/log"
-	"github.com/streadway/amqp"
 	"sync"
 	"time"
+
+	"github.com/heyHui2018/log"
+	"github.com/streadway/amqp"
+
+	"github.com/heyHui2018/best-practise/base"
 )
 
 var MQWait sync.WaitGroup

@@ -2,9 +2,11 @@ package dataSource
 
 import (
 	"errors"
-	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/utils"
 	"time"
+
+	"github.com/heyHui2018/utils"
+
+	"github.com/heyHui2018/best-practise/base"
 )
 
 type AirVisualReply struct {

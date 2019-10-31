@@ -1,9 +1,11 @@
 package etcd
 
 import (
-	"github.com/heyHui2018/best-practise/model/etcd"
-	"go.etcd.io/etcd/clientv3"
 	"time"
+
+	"go.etcd.io/etcd/clientv3"
+
+	"github.com/heyHui2018/best-practise/model/etcd"
 )
 
 func NewClient(endpoints []string) (*etcd.Client, error) {

@@ -15,7 +15,7 @@ import (
 
 type Server struct{}
 
-func (s *Server) GetTimestamp(ctx context.Context, in *pb.GetRequest) (*pb.GetReply, error) {
+func (this *Server) GetTimestamp(ctx context.Context, in *pb.GetRequest) (*pb.GetReply, error) {
 	t := new(log.TLog)
 	t.TraceId = time.Now().Format("20060102150405") + utils.GetRandomString()
 	start := time.Now()

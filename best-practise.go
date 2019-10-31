@@ -37,12 +37,12 @@ func main() {
 	// kafka.KafkaInit()
 
 	g := routers.InitRouter()
-	g.Use(middleWare.Cors())
+	g.Use(middleWare.Cors()) // 支持跨域
 
 	var err error
 	var opts []grpc.ServerOption
 
-	// tls
+	// TLS
 	// c := tls.TLS()
 	// c := tls.CATLS()
 	// opts = append(opts, grpc.Creds(c))

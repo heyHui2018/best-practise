@@ -3,11 +3,13 @@ package dataSource
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/heyHui2018/best-practise/model/dataSource"
-	"github.com/heyHui2018/best-practise/service/influxdb"
+	"time"
+
 	"github.com/heyHui2018/log"
 	"github.com/heyHui2018/utils"
-	"time"
+
+	"github.com/heyHui2018/best-practise/model/dataSource"
+	"github.com/heyHui2018/best-practise/service/influxdb"
 )
 
 func GetWeather(t *log.TLog, city, state, country string) *dataSource.AirVisualReply {

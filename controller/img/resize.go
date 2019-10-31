@@ -1,4 +1,4 @@
-package image
+package img
 
 import (
 	"time"
@@ -9,8 +9,8 @@ import (
 	"github.com/heyHui2018/best-practise/base"
 	"github.com/heyHui2018/best-practise/model"
 
-	imgM "github.com/heyHui2018/best-practise/model/image"
-	imgS "github.com/heyHui2018/best-practise/service/image"
+	imgM "github.com/heyHui2018/best-practise/model/img"
+	imgS "github.com/heyHui2018/best-practise/service/img"
 )
 
 /*
@@ -50,9 +50,7 @@ func Resize(c *gin.Context) {
 		return
 	}
 	fileType := fileHead.Header.Get("Content-Type")
-	t.Infof("Resize fileType = %v", fileType)
-
-	// fileType:such as image/jpeg,we can do some check here
+	t.Infof("Resize fileType = %v", fileType) // fileType:img/jpeg,do some check here
 
 	err = imgS.Decode(file, m)
 	if err != nil {

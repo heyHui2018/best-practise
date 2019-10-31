@@ -1,10 +1,11 @@
 package nsq
 
 import (
+	"time"
+
 	"github.com/heyHui2018/log"
 	"github.com/heyHui2018/utils"
 	"github.com/nsqio/go-nsq"
-	"time"
 )
 
 type ConsumerS struct {

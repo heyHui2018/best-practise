@@ -2,10 +2,12 @@ package rabbitMQ
 
 import (
 	"encoding/json"
-	"github.com/heyHui2018/best-practise/base"
+	"time"
+
 	"github.com/heyHui2018/log"
 	"github.com/streadway/amqp"
-	"time"
+
+	"github.com/heyHui2018/best-practise/base"
 )
 
 func MQPublish(t log.TLog, msg interface{}) {

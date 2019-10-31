@@ -1,4 +1,4 @@
-package image
+package img
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"github.com/golang/freetype"
 	"github.com/heyHui2018/log"
 
-	img "github.com/heyHui2018/best-practise/model/image"
+	img "github.com/heyHui2018/best-practise/model/img"
 )
 
 func Watermark(t *log.TLog, img *img.Image) (*bytes.Buffer, error) {
@@ -18,8 +18,7 @@ func Watermark(t *log.TLog, img *img.Image) (*bytes.Buffer, error) {
 	m := image.NewNRGBA(b)
 	switch img.Type {
 	case 1:
-		draw.Draw(m, b, img.Img, image.ZP, draw.Src)
-		// image.ZP指(0,0)点 draw.Src指原图替换掉目标图
+		draw.Draw(m, b, img.Img, image.ZP, draw.Src)                                 // img.ZP指(0,0)点 draw.Src指原图替换掉目标图
 		draw.Draw(m, img.Mark.Bounds().Add(image.ZP), img.Mark, image.ZP, draw.Over) // draw.Over指原图覆盖在目标图上
 	case 2:
 		for y := 0; y < img.Img.Bounds().Dy(); y++ {

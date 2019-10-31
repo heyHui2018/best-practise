@@ -1,12 +1,14 @@
 package kafka
 
 import (
-	"github.com/Shopify/sarama"
-	cluster "github.com/bsm/sarama-cluster"
-	"github.com/heyHui2018/best-practise/base"
-	"github.com/heyHui2018/log"
 	"sync"
 	"time"
+
+	"github.com/Shopify/sarama"
+	cluster "github.com/bsm/sarama-cluster"
+	"github.com/heyHui2018/log"
+
+	"github.com/heyHui2018/best-practise/base"
 )
 
 var KafkaWait sync.WaitGroup

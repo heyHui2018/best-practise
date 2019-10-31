@@ -1,11 +1,12 @@
 package kafka
 
 import (
+	"sync"
+	"time"
+
 	cluster "github.com/bsm/sarama-cluster"
 	"github.com/heyHui2018/log"
 	"github.com/heyHui2018/utils"
-	"sync"
-	"time"
 )
 
 var wait sync.WaitGroup

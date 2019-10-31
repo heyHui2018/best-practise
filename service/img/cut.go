@@ -1,4 +1,4 @@
-package image
+package img
 
 import (
 	"bytes"
@@ -7,7 +7,7 @@ import (
 	"github.com/disintegration/imaging"
 	"github.com/heyHui2018/log"
 
-	img "github.com/heyHui2018/best-practise/model/image"
+	img "github.com/heyHui2018/best-practise/model/img"
 )
 
 func Cut(t *log.TLog, img *img.Image) (*bytes.Buffer, error) {
