@@ -15,15 +15,18 @@ import (
 
 /*
 param:file 		图片文件
+	  quality 	质量,取值0-100,越大越清晰
+	  type		缩放类型 1-按尺寸缩放;2-按比例缩放
+	  ratio		缩放百分比,须大于0 小于100为缩小
       height 	高度
       width 	宽度
-      quality 	质量,取值0-100,越大越清晰
 */
 
 func Resize(c *gin.Context) {
 	t := new(log.TLog)
 	t.TraceId = c.GetString("traceId")
 	start := time.Now()
+
 	r := new(imgM.Resize)
 	err := c.ShouldBind(r)
 	if err != nil {
@@ -31,9 +34,6 @@ func Resize(c *gin.Context) {
 		model.Fail(base.BadRequest, c)
 		return
 	}
-	r.Width = c.Request.FormValue("width")
-	r.Height = c.Request.FormValue("height")
-	r.Quality = c.Request.FormValue("quality")
 	t.Infof("Resize 入参 r = %+v", r)
 
 	m := new(imgM.Image)
@@ -49,7 +49,7 @@ func Resize(c *gin.Context) {
 		model.Fail(base.ParamError, c)
 		return
 	}
-	fileType := fileHead.Header.Get("Content-Type")
+	fileType := fileHead.Header.Get("Content-MarkType")
 	t.Infof("Resize fileType = %v", fileType) // fileType:img/jpeg,do some check here
 
 	err = imgS.Decode(file, m)
@@ -58,6 +58,12 @@ func Resize(c *gin.Context) {
 		model.Fail(base.SystemError, c)
 		return
 	}
+
+	if m.ResizeType == 2 {
+		m.Width = (m.Img.Bounds().Max.X * m.Ratio) / 100
+		m.Height = (m.Img.Bounds().Max.Y * m.Ratio) / 100
+	}
+
 	out, err := imgS.Resize(t, m)
 	if err != nil {
 		model.Fail(base.SystemError, c)

@@ -32,12 +32,12 @@ type Port struct {
 	IP          string `json:"IP"`
 	PrivatePort int    `json:"PrivatePort"`
 	PublicPort  int    `json:"PublicPort"`
-	Type        string `json:"Type"`
+	Type        string `json:"MarkType"`
 }
 
 // docker 挂载
 type Mount struct {
-	Type        string `json:"Type"`
+	Type        string `json:"MarkType"`
 	Source      string `json:"Source"`
 	Destination string `json:"Destination"`
 	Mode        string `json:"Mode"`

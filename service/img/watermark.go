@@ -16,7 +16,7 @@ import (
 func Watermark(t *log.TLog, img *img.Image) (*bytes.Buffer, error) {
 	b := img.Img.Bounds()
 	m := image.NewNRGBA(b)
-	switch img.Type {
+	switch img.MarkType {
 	case 1:
 		draw.Draw(m, b, img.Img, image.ZP, draw.Src)                                 // img.ZP指(0,0)点 draw.Src指原图替换掉目标图
 		draw.Draw(m, img.Mark.Bounds().Add(image.ZP), img.Mark, image.ZP, draw.Over) // draw.Over指原图覆盖在目标图上

@@ -39,11 +39,6 @@ func Register(c *gin.Context) {
 		model.Fail(base.BadRequest, c)
 		return
 	}
-	rr.Email = c.Request.FormValue("email")
-	rr.Hour = c.Request.FormValue("hour")
-	rr.City = c.Request.FormValue("city")
-	rr.State = c.Request.FormValue("state")
-	rr.Country = c.Request.FormValue("country")
 	t.Infof("Register 入参,rr = %+v", rr)
 
 	// 查询是否已注册

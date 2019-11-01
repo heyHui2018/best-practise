@@ -45,9 +45,9 @@ func SendMail(t *log.TLog) {
 	auth := smtp.PlainAuth("", mail.Username, mail.Password, strings.Split(MailHostMap["tencent"], ":")[0])
 	var contentType string
 	if mail.MailType == "html" {
-		contentType = "Content-Type: text/html; charset=UTF-8"
+		contentType = "Content-MarkType: text/html; charset=UTF-8"
 	} else {
-		contentType = "Content-Type: text/plain; charset=UTF-8"
+		contentType = "Content-MarkType: text/plain; charset=UTF-8"
 	}
 	subject := "Weather Today"
 	data := dataSource.GetWeather(t, "ShangHai", "ShangHai", "China")

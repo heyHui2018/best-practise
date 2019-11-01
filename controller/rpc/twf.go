@@ -56,7 +56,7 @@ func Reply(client pb.UserClient) {
 		return
 	}
 	notes := []*pb.Message{
-		{Type: "UserInfoRequest", Data: out},
+		{MarkType: "UserInfoRequest", Data: out},
 	}
 	stream, err := client.Communicate(context.Background())
 	if err != nil {
@@ -78,7 +78,7 @@ func Reply(client pb.UserClient) {
 				return
 			}
 			t.Infof("Reply,in = %+v", in)
-			if in.Type == "UserInfoRequest" {
+			if in.MarkType == "UserInfoRequest" {
 				mess := &pb.UserInfoRequest{}
 				if err := proto.Unmarshal(in.Data, mess); err != nil {
 					t.Warnf("Reply, proto.Unmarshal error,err = %v", err)

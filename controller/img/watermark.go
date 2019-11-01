@@ -24,6 +24,7 @@ func Watermark(c *gin.Context) {
 	t := new(log.TLog)
 	t.TraceId = c.GetString("traceId")
 	start := time.Now()
+
 	w := new(imgM.Watermark)
 	err := c.ShouldBind(w)
 	if err != nil {
@@ -31,9 +32,6 @@ func Watermark(c *gin.Context) {
 		model.Fail(base.BadRequest, c)
 		return
 	}
-	w.Quality = c.Request.FormValue("quality")
-	w.Type = c.Request.FormValue("type")
-	w.Text = c.Request.FormValue("text")
 	t.Infof("Watermark 入参 w = %+v", w)
 
 	m := new(imgM.Image)
@@ -49,7 +47,7 @@ func Watermark(c *gin.Context) {
 		model.Fail(base.ParamError, c)
 		return
 	}
-	fileType := fileHead.Header.Get("Content-Type")
+	fileType := fileHead.Header.Get("Content-MarkType")
 	t.Infof("Watermark fileType = %v", fileType) // fileType:such as img/jpeg,we can do some check here
 
 	err = imgS.Decode(file, m)
@@ -59,7 +57,7 @@ func Watermark(c *gin.Context) {
 		return
 	}
 
-	switch m.Type {
+	switch m.MarkType {
 	case 1:
 		mark, _, err := c.Request.FormFile("mark")
 		if err != nil {
@@ -67,6 +65,7 @@ func Watermark(c *gin.Context) {
 			model.Fail(base.ParamError, c)
 			return
 		}
+
 		mm := new(imgM.Image)
 		err = imgS.Decode(mark, mm)
 		if err != nil {
@@ -76,20 +75,20 @@ func Watermark(c *gin.Context) {
 		}
 		m.Mark = mm.Img
 	case 2:
-		if w.Text == "" {
+		if len(w.Text) == 0 {
 			t.Warnf("Watermark w.Text 为空")
 			model.Fail(base.ParamError, c)
 			return
 		}
 		m.Text = w.Text
 	default:
-		t.Warnf("Watermark wrong m.Type,m.Type = %v", m.Type)
+		t.Warnf("Watermark wrong m.MarkType,m.MarkType = %v", m.MarkType)
 		model.Fail(base.ParamError, c)
 		return
 	}
 	out, err := imgS.Watermark(t, m)
 	if err != nil {
-		model.Fail(base.ParamError, c)
+		model.Fail(base.SystemError, c)
 		return
 	}
 	t.Infof("Watermark 完成,耗时 = %v", time.Since(start))

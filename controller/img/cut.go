@@ -27,6 +27,7 @@ func Cut(c *gin.Context) {
 	t := new(log.TLog)
 	t.TraceId = c.GetString("traceId")
 	start := time.Now()
+
 	cut := new(imgM.Cut)
 	err := c.ShouldBind(cut)
 	if err != nil {
@@ -34,11 +35,6 @@ func Cut(c *gin.Context) {
 		model.Fail(base.BadRequest, c)
 		return
 	}
-	cut.X0 = c.Request.FormValue("x0")
-	cut.X1 = c.Request.FormValue("x1")
-	cut.Y0 = c.Request.FormValue("y0")
-	cut.Y1 = c.Request.FormValue("y1")
-	cut.Quality = c.Request.FormValue("quality")
 	t.Infof("Cut 入参 cut = %+v", cut)
 
 	m := new(imgM.Image)
@@ -54,7 +50,7 @@ func Cut(c *gin.Context) {
 		model.Fail(base.ParamError, c)
 		return
 	}
-	fileType := fileHead.Header.Get("Content-Type")
+	fileType := fileHead.Header.Get("Content-MarkType")
 	t.Infof("Cut,fileType = %v", fileType) // fileType:img/jpeg,do some check here
 
 	err = imgS.Decode(file, m)
@@ -63,6 +59,7 @@ func Cut(c *gin.Context) {
 		model.Fail(base.SystemError, c)
 		return
 	}
+
 	out, err := imgS.Cut(t, m)
 	if err != nil {
 		model.Fail(base.SystemError, c)
